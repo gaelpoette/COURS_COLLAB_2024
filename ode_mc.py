@@ -178,6 +178,7 @@ while tps < temps_final:
    cmdt+=str(eta[c] / vol)+" "
   cmd+="\n"+cmdt
 
+print("\n fin du calcul")
 output = open("rez.txt",'w')
 output.write(cmd)
 output.close()
