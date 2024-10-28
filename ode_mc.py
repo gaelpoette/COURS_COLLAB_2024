@@ -10,6 +10,9 @@ import random
 # importation des paramètres
 from param import *
 
+#fixer la graine
+random.seed(100)
+
 print("liste des reactions")
 print(list_reac)
 if (not(len(list_reac)==len(list_sigr))):
@@ -100,7 +103,7 @@ cmd+="\n"+str(tps)+" "
 for c in compos:
  cmd+=str(eta[c]/vol)+" "
 
-print("\n début du calcul")
+print("\n calcul en cours")
 
 while tps < temps_final:
 
