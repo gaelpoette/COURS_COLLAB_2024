@@ -8,7 +8,11 @@ import random
 
 
 # importation des paramètres
-from param import *
+from fich_cas_test.param import *
+
+if 'list_reac' not in globals():
+  print("ATTENTION! La variable list_react n'existe pas")
+  exit(1)
 
 print("liste des reactions")
 print(list_reac)
