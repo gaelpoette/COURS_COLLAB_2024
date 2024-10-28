@@ -37,7 +37,7 @@ for c in compos:
 print("conditions initiales des espèces")
 print(eta)
 
-h={}
+liste_compo_reac={}
 nu={}
 for i in range(len(list_reac)):
     print("\n num de reaction = "+str(i)+"")
@@ -49,9 +49,9 @@ for i in range(len(list_reac)):
 
     isnum=0
     if list_type[i] == "binaire":
-          h[i] = [compos_reac[0], compos_reac[1]]
+          liste_compo_reac[i] = [compos_reac[0], compos_reac[1]]
     elif list_type[i] == "unaire":
-          h[i] = [compos_reac[0]]
+          liste_compo_reac[i] = [compos_reac[0]]
     else:
           print("type de reaction non reconnue")
           exit(2)
@@ -76,7 +76,7 @@ for i in range(len(list_reac)):
               nu[i][cg] +=  0.
           num+=1
 print("\nles listes de réactifs (h) pour chaque reaction")
-print(h)
+print(liste_compo_reac)
 print("les coefficients stoechiométriques (nu) pour chaque reaction")
 print(nu)
 # population de particules représentant la condition initiale
@@ -120,7 +120,7 @@ while tps < temps_final:
           sig = 0.
           for i in range(len(list_reac)):
               prod = 1.
-              for H in h[i]:
+              for H in liste_compo_reac[i]:
                   prod *= pmc["densities"][H]
 
               exposant = 1
@@ -153,7 +153,7 @@ while tps < temps_final:
               proba = 0.
               for i in range(len(list_reac)-1):
                   prod = 1.
-                  for H in h[i]:
+                  for H in liste_compo_reac[i]:
                       prod *= pmc["densities"][H]
 
                   exposant = 1
