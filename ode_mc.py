@@ -75,9 +75,9 @@ for i in range(len(list_reac)):
           else:
               nu[i][cg] +=  0.
           num+=1
-print("\nles listes de réactifs (h) pour chaque reaction")
+print("\nles listes de reactifs (h) pour chaque reaction")
 print(h)
-print("les coefficients stoechiométriques (nu) pour chaque reaction")
+print("les coefficients stoechiometriques (nu) pour chaque reaction")
 print(nu)
 # population de particules représentant la condition initiale
 PMC=[]
