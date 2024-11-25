@@ -18,7 +18,6 @@ print(list_reac)
 if (not(len(list_reac)==len(list_sigr))):
   print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
   exit(1)
-
 # lecture de la liste des compositions des réactions
 compos=[]
 for i in range(len(list_reac)): 
@@ -37,7 +36,7 @@ for c in compos:
     if c=="Ar" or c=="e^-":
       eta[c] = 1. * vol
 	
-print("conditions initiales des espèces")
+print("conditions initiales des especes")
 print(eta)
 
 h={}
