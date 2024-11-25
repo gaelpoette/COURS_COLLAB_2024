@@ -199,5 +199,5 @@ output = open("gnu.plot",'w')
 output.write(cmd_gnu)
 output.close()
 
-os.system("gnuplot gnu.plot")
+#os.system("gnuplot gnu.plot")
 

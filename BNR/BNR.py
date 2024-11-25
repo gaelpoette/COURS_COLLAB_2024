@@ -19,5 +19,6 @@ if compt == 0:
     print("Test repro OK")
 else:
     print("Test repro KO")
+    os.system("gnuplot gnu.plot")
 os.chdir("..")
 
