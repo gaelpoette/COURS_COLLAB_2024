@@ -8,7 +8,10 @@ import random
 
 
 # importation des paramètres
-from param import *
+from fich_cas_test.param import *
+
+#fixer la graine
+random.seed(100)
 
 print("liste des reactions")
 print(list_reac)
@@ -103,7 +106,7 @@ cmd+="\n"+str(tps)+" "
 for c in compos:
  cmd+=str(eta[c]/vol)+" "
 
-print("\n début du calcul")
+print("\n calcul en cours")
 
 while tps < temps_final:
 
@@ -178,6 +181,7 @@ while tps < temps_final:
    cmdt+=str(eta[c] / vol)+" "
   cmd+="\n"+cmdt
 
+print("\n fin du calcul")
 output = open("rez.txt",'w')
 output.write(cmd)
 output.close()
