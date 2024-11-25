@@ -7,8 +7,14 @@ import os
 import random
 
 os.chdir("repro")
-os.system("cp param.py ../../ ")
+os.system("pwd")
+os.system("\cp param.py ../../ ")
 os.system("python3 ../../ode_mc.py")
 os.system("meld rez.txt rez_ref.txt")
+os.chdir("..")
+
+os.chdir("exceptions")
+os.system("\cp param.py ../../ ")
+os.system("python3 ../../ode_mc.py")
 os.chdir("..")
 
