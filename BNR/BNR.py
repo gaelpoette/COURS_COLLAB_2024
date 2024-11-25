@@ -21,3 +21,4 @@ else:
     print("Test repro KO")
 os.chdir("..")
 
+os.system("rm repro/rez.txt repro/listing repro/gnu.plot")
