@@ -8,7 +8,7 @@ import random
 
 
 # importation des paramètres
-from fich_cas_test.param import *
+from param import *
 
 #fixer la graine
 random.seed(100)
