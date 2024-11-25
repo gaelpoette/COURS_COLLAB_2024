@@ -114,11 +114,8 @@ while tps < temps_final:
         eta[c] = 0.0
 
     for pmc in PMC:
-
         tps_cur = 0.0
-
         while tps_cur < dt:
-
             # section efficace totale
             sig = 0.0
             for i in range(len(list_reac)):
@@ -151,7 +148,6 @@ while tps < temps_final:
             else:
                 # reaction
                 U = random.random()
-
                 reac = len(list_reac) - 1
                 proba = 0.0
                 for i in range(len(list_reac) - 1):
@@ -178,6 +174,7 @@ while tps < temps_final:
         cmdt += str(eta[c] / vol) + " "
     cmd += "\n" + cmdt
 
+print("\n fin du calcul")
 output = open("rez.txt", "w")
 output.write(cmd)
 output.close()
@@ -187,6 +184,12 @@ cmd_gnu = (
 )
 i = 3
 cmd_gnu += "'rez.txt' lt 1 w lp  t '" + str(compos[0]) + "'"
+
+# configuration gnuplot pour le dessin
+cmd_gnu="set sty da l; set grid; set xl 'Temps'; set yl 'Densite des especes'; plot "
+i=3
+cmd_gnu+="'rez.txt' lt 1 w lp  t '"+str(compos[0])+"'"
+
 for c in compos:
     if not (c == compos[0]):
         cmd_gnu += (

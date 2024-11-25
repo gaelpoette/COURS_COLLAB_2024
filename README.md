@@ -4,3 +4,9 @@ Un petit code de cinétique chimique résolu par méthode MC volontairement impa
 Cette branche contient les modifications de Serge
 
 Pullez à vos risques et périls, pushez et je vous retrouverai :)
+
+
+# BNR est une base de non regression pour la lancer:
+cd BNR
+python BNR.py
+
