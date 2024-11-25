@@ -8,7 +8,7 @@ import random
 
 
 # importation des paramètres
-from fich_cas_test.param import *
+from param import *
 
 #fixer la graine
 random.seed(100)
@@ -58,6 +58,8 @@ for i in range(n_reac):
           h[i] = [compos_reac[0], compos_reac[1]]
     elif list_type[i] == "unaire":
           h[i] = [compos_reac[0]]
+    elif list_type [i] == "ternaire":
+          h[i] = [compos_reac[0], compos_reac[1], compos_reac[2]]
     else:
           print("type de reaction non reconnue")
           exit(2)
@@ -74,6 +76,8 @@ for i in range(n_reac):
               isnum = (num == 0 or num == 1)
           if list_type[i] == "unaire":
               isnum = (num == 0)
+          if list_type[i] == "ternaire":
+              isnum = (num == 0 or num == 1 or num ==2)
           if c == cg and (isnum): #réactions à 2 réactifs
               nu[i][cg] += -1.
           if c == cg and (not isnum): #réactions à 2 réactifs
