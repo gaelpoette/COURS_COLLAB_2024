@@ -30,12 +30,17 @@ for i in range(len(list_reac)):
 print("liste des especes")
 print(compos)
 
-#"conditions initiales en eta codée en dur pour l'instant
-eta={}
+#lecture conditions initiales
+CLE = []
+for cle,valeur in list_CI.items():
+    CLE.append(cle)
+
+eta = {}
 for c in compos:
-    eta[c]=0.
-    if c=="Ar" or c=="e^-":
-      eta[c] = 1. * vol
+    if c in CLE :
+        eta[c] = list_CI[c]*vol
+    else:
+        eta[c] = 0.
 	
 print("conditions initiales des espèces")
 print(eta)
