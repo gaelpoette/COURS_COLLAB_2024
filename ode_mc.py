@@ -181,7 +181,7 @@ while tps < temps_final:
 output = open("rez.txt",'w')
 output.write(cmd)
 output.close()
-
+#Faire un plot en utilisant "gnuplot"
 cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
 i=3
 cmd_gnu+="'rez.txt' lt 1 w lp  t '"+str(compos[0])+"'"
