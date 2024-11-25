@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: iso-8859-1 -*-
 
 from math import *
@@ -15,9 +15,8 @@ random.seed(100)
 
 print("liste des reactions")
 print(list_reac)
-if (not(len(list_reac)==len(list_sigr))):
-  print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
-  exit(1)
+if len(list_reac) != len(list_sigr):	# lance une exception
+    raise ValueError("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
 
 # lecture de la liste des compositions des réactions
 compos=[]
