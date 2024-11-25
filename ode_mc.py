@@ -10,15 +10,54 @@ import random
 # importation des paramètres
 from param import *
 
+
+def save_sol(output_path=False, compos=False):
+    if(output_path and compos):
+        output = open(output_path,'w')
+        output.write(cmd)
+        output.close()
+
+        cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
+        i=3
+        cmd_gnu+="'" + output_path + "' lt 1 w lp  t '" + str(compos[0]) + "'"
+        for c in compos:
+            if not(c==compos[0]):
+                cmd_gnu+=",'' u 1:"+str(i)+" lt "+str(i)+" w lp t '"+str(compos[i-2])+"'"
+                i+=1
+
+        cmd_gnu+=";pause -1"
+        output = open("gnu.plot",'w')
+        output.write(cmd_gnu)
+        output.close()
+    else: 
+        print("ERROR: Parametre d'entree de la fonction save_sol non valide \n")
+        exit(1)
+
 #fixer la graine
 random.seed(100)
+
+if 'list_reac' not in globals():
+  print("ATTENTION! La variable list_react n'existe pas")
+  exit(1)
 
 print("liste des reactions")
 print(list_reac)
 if (not(len(list_reac)==len(list_sigr))):
+if (not(len(list_reac)==len(list_sigr))):
   print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
   exit(1)
 
+# fonction pour la lecture de la liste des compositions des réactions
+def compos(list_reac):
+    compos = []
+    for i in range(len(list_reac)):
+        compos_reac=(list_reac[i].split(' '))
+        for j in range(len(compos_reac)):
+            if not(compos_reac[j] in compos):
+                compos.append(compos_reac[j])
+    return compos
+# lecture de la liste des compositions des réactions
+compos=compos(list_reac)
 # fonction pour la lecture de la liste des compositions des réactions
 def compos(list_reac):
     compos = []
@@ -42,11 +81,22 @@ def eta(compos, vol):
     return eta
 #initialisation
 eta = eta(compos, vol)	
+#fonction pour les états init
+def eta(compos, vol):
+    eta = {}
+    for c in compos:
+        if c in ["Ar", "e^-"]:
+            eta[c] = 1. * vol
+    return eta
+#conditions initiales en eta codée en dur pour l'instant
+eta = eta(compos, vol)	
 print("conditions initiales des espèces")
 print(eta)
 
+
 h={}
 nu={}
+for i in range(len(list_reac)):
 for i in range(len(list_reac)):
     print("\n num de reaction = "+str(i)+"")
     reac = list_reac[i]
@@ -109,6 +159,7 @@ for c in compos:
  cmd+=str(eta[c]/vol)+" "
 
 print("\n début du calcul")
+print("\n début du calcul")
 
 while tps < temps_final:
 
@@ -126,6 +177,7 @@ while tps < temps_final:
 
           # section efficace totale
           sig = 0.
+          for i in range(len(list_reac)):
           for i in range(len(list_reac)):
               prod = 1.
               for H in h[i]:
@@ -158,7 +210,9 @@ while tps < temps_final:
               U = random.random()
 
               reac = len(list_reac)-1
+              reac = len(list_reac)-1
               proba = 0.
+              for i in range(len(list_reac)-1):
               for i in range(len(list_reac)-1):
                   prod = 1.
                   for H in h[i]:
@@ -186,6 +240,8 @@ while tps < temps_final:
 output = open("rez.txt",'w')
 output.write(cmd)
 output.close()
+#Faire un plot en utilisant "gnuplot"
+cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
 #Faire un plot en utilisant "gnuplot"
 cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
 i=3
