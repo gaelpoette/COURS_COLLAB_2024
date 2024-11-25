@@ -21,24 +21,29 @@ if (not(len(list_reac)==len(list_sigr))):
 
 # lecture de la liste des compositions des réactions
 compos=[] #compos vecteur de compositions de la réaction
-for i in range(len(list_reac)): 
-  compos_reac=(list_reac[i].split(' '))
-  for j in range(len(compos_reac)):
-     if not(compos_reac[j] in compos):
+for i in range(len(list_reac)):  #Liste reac contient la réaction écrite comme une texte
+  compos_reac=(list_reac[i].split(' ')) 
+  for j in range(len(compos_reac)): 
+     if not(compos_reac[j] in compos): #Ajoute un réagent s'il n'est pas dejà ajouté
        compos.append(compos_reac[j]) 
 
 print("liste des especes")
 print(compos)
+
+# On y manque une façon de visualiser la réaction simplement
+# EX A + B -> C 
+
 
 #"conditions initiales en eta codée en dur pour l'instant
 eta={} #eta concentration initiale des réagents
 for c in compos:
     eta[c]=0. 
     if c=="Ar" or c=="e^-":
-      eta[c] = 1. * vol  #L'Argon et les éléctrons ont dejà une concentration au debut je sais pas 
+      eta[c] = 1. * vol  #L'Argon et les électrons ont dejà une concentration au debut je sais pas pourquoi
 	
 print("conditions initiales des espèces")
 print(eta)
+
 
 h={}
 nu={}
@@ -82,6 +87,7 @@ print("\nles listes de réactifs (h) pour chaque reaction")
 print(h)
 print("les coefficients stoechiométriques (nu) pour chaque reaction")
 print(nu)
+
 # population de particules représentant la condition initiale
 PMC=[]
 for nmc in range(Nmc):
@@ -134,7 +140,7 @@ while tps < temps_final:
 
           #tirage du temps de la prochaine reaction
           U = random.random()
-          tau = 1.e32
+          tau = 1.e32 #pourquoi il faut initialiser tau comme 1.e32
           if sig > 0.:
               tau = - log(U) / sig
 
