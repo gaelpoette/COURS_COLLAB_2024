@@ -8,7 +8,7 @@ import random
 
 
 # importation des paramètres
-from fich_cas_test.param import *
+from param import *
 
 #fixer la graine
 random.seed(100)
@@ -186,7 +186,8 @@ output = open("rez.txt",'w')
 output.write(cmd)
 output.close()
 
-cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
+# configuration gnuplot pour le dessin
+cmd_gnu="set sty da l; set grid; set xl 'Temps'; set yl 'Densite des especes'; plot "
 i=3
 cmd_gnu+="'rez.txt' lt 1 w lp  t '"+str(compos[0])+"'"
 for c in compos:
