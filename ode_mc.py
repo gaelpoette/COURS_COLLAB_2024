@@ -8,7 +8,7 @@ import random
 
 
 # importation des paramètres
-from param import *
+from fich_cas_test.param import *
 
 #fixer la graine
 random.seed(100)
@@ -178,6 +178,7 @@ while tps < temps_final:
    cmdt+=str(eta[c] / vol)+" "
   cmd+="\n"+cmdt
 
+print("\n fin du calcul")
 output = open("rez.txt",'w')
 output.write(cmd)
 output.close()
