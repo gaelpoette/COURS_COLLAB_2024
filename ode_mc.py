@@ -106,7 +106,7 @@ cmd+="\n"+str(tps)+" "
 for c in compos:
  cmd+=str(eta[c]/vol)+" "
 
-print("\n calcul en cours")
+print("\n En cours de calcul")
 
 while tps < temps_final:
 
@@ -181,7 +181,7 @@ while tps < temps_final:
    cmdt+=str(eta[c] / vol)+" "
   cmd+="\n"+cmdt
 
-print("\n fin du calcul")
+print("\n Fin du calcul")
 output = open("rez.txt",'w')
 output.write(cmd)
 output.close()
