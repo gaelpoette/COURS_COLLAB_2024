@@ -36,6 +36,10 @@ def save_sol(output_path=False, compos=False):
 #fixer la graine
 random.seed(100)
 
+if 'list_reac' not in globals():
+  print("ATTENTION! La variable list_react n'existe pas")
+  exit(1)
+
 print("liste des reactions")
 print(list_reac)
 if (not(len(list_reac)==len(list_sigr))):
