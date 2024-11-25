@@ -9,6 +9,6 @@ import random
 os.chdir("repro")
 os.system("cp param.py ../../ ")
 os.system("python3 ../../ode_mc.py")
-os.system("meld rez.txt rez_ref.txt")
+os.system("diff rez.txt rez_ref.txt")
 os.chdir("..")
 
