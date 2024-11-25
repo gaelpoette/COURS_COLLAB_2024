@@ -186,7 +186,7 @@ output = open("rez.txt",'w')
 output.write(cmd)
 output.close()
 
-cmd_gnu="set sty da l;set grid; set xl 'Temps'; set yl 'Densite des especes'; plot "
+cmd_gnu="set sty da l; set grid; set xl 'Temps'; set yl 'Densite des especes'; plot "
 i=3
 cmd_gnu+="'rez.txt' lt 1 w lp  t '"+str(compos[0])+"'"
 for c in compos:
