@@ -23,7 +23,6 @@ if (not(n_reac==len(list_sigr))):
 # lecture de la liste des compositions des réactions
 compos=[]
 
-
 for i in range(n_reac): 
   compos_reac=(list_reac[i].split(' '))
   for j in range(len(compos_reac)):
@@ -33,14 +32,14 @@ for i in range(n_reac):
 print("liste des especes")
 print(compos)
 
-#"conditions initiales en eta codée en dur pour l'instant
+# conditions initiales en eta codée en dur pour l'instant
 eta={}
 for c in compos:
     eta[c]=0.
     if c=="Ar" or c=="e^-":
       eta[c] = 1. * vol
 	
-print("conditions initiales des espèces")
+print("conditions initiales des especes")
 print(eta)
 
 h={}
@@ -81,9 +80,9 @@ for i in range(n_reac):
           else:
               nu[i][cg] +=  0.
           num+=1
-print("\nles listes de réactifs (h) pour chaque reaction")
+print("\nles listes de reactifs (h) pour chaque reaction")
 print(h)
-print("les coefficients stoechiométriques (nu) pour chaque reaction")
+print("les coefficients stoechiometriques (nu) pour chaque reaction")
 print(nu)
 # population de particules représentant la condition initiale
 PMC=[]
@@ -199,5 +198,6 @@ output = open("gnu.plot",'w')
 output.write(cmd_gnu)
 output.close()
 
+# l'affichage du graphique est dans le test repro si le test est KO
 #os.system("gnuplot gnu.plot")
 
