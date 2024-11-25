@@ -8,18 +8,47 @@ import random
 
 
 # importation des paramètres
-from fich_cas_test.param import *
+from param import *
+
+
+def save_sol(output_path=False, compos=False):
+    if(output_path and compos):
+        output = open(output_path,'w')
+        output.write(cmd)
+        output.close()
+
+        cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
+        i=3
+        cmd_gnu+="'" + output_path + "' lt 1 w lp  t '" + str(compos[0]) + "'"
+        for c in compos:
+            if not(c==compos[0]):
+                cmd_gnu+=",'' u 1:"+str(i)+" lt "+str(i)+" w lp t '"+str(compos[i-2])+"'"
+                i+=1
+
+        cmd_gnu+=";pause -1"
+        output = open("gnu.plot",'w')
+        output.write(cmd_gnu)
+        output.close()
+    else: 
+        print("ERROR: Parametre d'entree de la fonction save_sol non valide \n")
+        exit(1)
 
 #fixer la graine
 random.seed(100)
 
+if 'list_reac' not in globals():
+  print("ATTENTION! La variable list_react n'existe pas")
+  exit(1)
+
 print("liste des reactions")
 print(list_reac)
-if (not(len(list_reac)==len(list_sigr))):
+n_reac = len(list_reac)
+if (not(n_reac==len(list_sigr))):
   print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
   exit(1)
 
 # lecture de la liste des compositions des réactions
+<<<<<<< HEAD
 compos=[] #compos vecteur de compositions de la réaction
 for i in range(len(list_reac)):  #Liste reac contient la réaction écrite comme une texte
   compos_reac=(list_reac[i].split(' ')) 
@@ -47,7 +76,7 @@ print(eta)
 
 h={}
 nu={}
-for i in range(len(list_reac)):
+for i in range(n_reac):
     print("\n num de reaction = "+str(i)+"")
     reac = list_reac[i]
     compos_reac = (reac.split(' '))
@@ -127,7 +156,7 @@ while tps < temps_final:
 
           # section efficace totale
           sig = 0.
-          for i in range(len(list_reac)):
+          for i in range(n_reac):
               prod = 1.
               for H in h[i]:
                   prod *= pmc["densities"][H]
@@ -158,9 +187,9 @@ while tps < temps_final:
               #reaction
               U = random.random()
 
-              reac = len(list_reac)-1
+              reac = n_reac-1
               proba = 0.
-              for i in range(len(list_reac)-1):
+              for i in range(n_reac-1):
                   prod = 1.
                   for H in h[i]:
                       prod *= pmc["densities"][H]
@@ -191,18 +220,7 @@ output = open("rez.txt",'w')
 output.write(cmd)
 output.close()
 
-cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
-i=3
-cmd_gnu+="'rez.txt' lt 1 w lp  t '"+str(compos[0])+"'"
-for c in compos:
-   if not(c==compos[0]):
-     cmd_gnu+=",'' u 1:"+str(i)+" lt "+str(i)+" w lp t '"+str(compos[i-2])+"'"
-     i+=1
-
-cmd_gnu+=";pause -1"
-output = open("gnu.plot",'w')
-output.write(cmd_gnu)
-output.close()
+save_sol(output_path="rez.txt", compos=compos)
 
 os.system("gnuplot gnu.plot")
 
