@@ -15,13 +15,16 @@ random.seed(100)
 
 print("liste des reactions")
 print(list_reac)
-if (not(len(list_reac)==len(list_sigr))):
+n_reac = len(list_reac)
+if (not(n_reac==len(list_sigr))):
   print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
   exit(1)
 
 # lecture de la liste des compositions des réactions
 compos=[]
-for i in range(len(list_reac)): 
+
+
+for i in range(n_reac): 
   compos_reac=(list_reac[i].split(' '))
   for j in range(len(compos_reac)):
      if not(compos_reac[j] in compos):
@@ -42,7 +45,7 @@ print(eta)
 
 h={}
 nu={}
-for i in range(len(list_reac)):
+for i in range(n_reac):
     print("\n num de reaction = "+str(i)+"")
     reac = list_reac[i]
     compos_reac = (reac.split(' '))
@@ -121,7 +124,7 @@ while tps < temps_final:
 
           # section efficace totale
           sig = 0.
-          for i in range(len(list_reac)):
+          for i in range(n_reac):
               prod = 1.
               for H in h[i]:
                   prod *= pmc["densities"][H]
@@ -152,9 +155,9 @@ while tps < temps_final:
               #reaction
               U = random.random()
 
-              reac = len(list_reac)-1
+              reac = n_reac-1
               proba = 0.
-              for i in range(len(list_reac)-1):
+              for i in range(n_reac-1):
                   prod = 1.
                   for H in h[i]:
                       prod *= pmc["densities"][H]
