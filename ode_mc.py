@@ -20,22 +20,22 @@ if (not(len(list_reac)==len(list_sigr))):
   exit(1)
 
 # lecture de la liste des compositions des réactions
-compos=[]
+compos=[] #compos vecteur de compositions de la réaction
 for i in range(len(list_reac)): 
   compos_reac=(list_reac[i].split(' '))
   for j in range(len(compos_reac)):
      if not(compos_reac[j] in compos):
-       compos.append(compos_reac[j])
+       compos.append(compos_reac[j]) 
 
 print("liste des especes")
 print(compos)
 
 #"conditions initiales en eta codée en dur pour l'instant
-eta={}
+eta={} #eta concentration initiale des réagents
 for c in compos:
-    eta[c]=0.
+    eta[c]=0. 
     if c=="Ar" or c=="e^-":
-      eta[c] = 1. * vol
+      eta[c] = 1. * vol  #L'Argon et les éléctrons ont dejà une concentration au debut je sais pas 
 	
 print("conditions initiales des espèces")
 print(eta)
@@ -179,6 +179,8 @@ while tps < temps_final:
   cmd+="\n"+cmdt
 
 print("\n fin du calcul")
+
+#output 
 output = open("rez.txt",'w')
 output.write(cmd)
 output.close()
