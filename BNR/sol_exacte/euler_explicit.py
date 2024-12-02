@@ -22,11 +22,18 @@ V = 1.0
 eta_e0 = 1.0  
 eta_A0 = 1.0   
 t_start = 0.0
-t_end = 10.0
+t_end = 30.0
 dt = 0.01  
 
 # Appel de la fonction
 time, eta_e, eta_A = euler_explicit_1(sigma_0, V, eta_e0, eta_A0, t_start, t_end, dt)
+
+f = open("euler.txt", "w")
+cmd =""
+for i in range(len(time)):
+    cmd+=""+str(time[i])+" "+str(eta_e[i])+" "+str(eta_A[i])+"\n"
+f.write(cmd)
+f.close()
 
 # Affichage des résultats
 plt.figure(figsize=(10, 6))

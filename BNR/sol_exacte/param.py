@@ -1,7 +1,7 @@
 # PARAM: nb de particules MC
-Nmc=10
+Nmc=1000
 # PARAM: Volume
-vol = 10.
+vol = 100.
 # PARAM: construction de la liste des temps d'intérêt
 temps_final = 30
 dt=1
