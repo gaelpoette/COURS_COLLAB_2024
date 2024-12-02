@@ -7,23 +7,18 @@ import os
 import random
 
 
-# importation des paramètres
+# importation des paramÃ¨tres
 from param import *
-
-#fixer la graine
-random.seed(100)
 
 print("liste des reactions")
 print(list_reac)
-n_reac = len(list_reac)
-if (not(n_reac==len(list_sigr))):
+if (not(len(list_reac)==len(list_sigr))):
   print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
   exit(1)
-# lecture de la liste des compositions des réactions
+
+# lecture de la liste des compositions des rÃ©actions
 compos=[]
-
-
-for i in range(n_reac): 
+for i in range(len(list_reac)): 
   compos_reac=(list_reac[i].split(' '))
   for j in range(len(compos_reac)):
      if not(compos_reac[j] in compos):
@@ -32,19 +27,19 @@ for i in range(n_reac):
 print("liste des especes")
 print(compos)
 
-#"conditions initiales en eta codée en dur pour l'instant
+#"conditions initiales en eta codÃ©e en dur pour l'instant
 eta={}
 for c in compos:
     eta[c]=0.
     if c=="Ar" or c=="e^-":
       eta[c] = 1. * vol
 	
-print("conditions initiales des especes")
+print("conditions initiales des espÃ¨ces")
 print(eta)
 
 h={}
 nu={}
-for i in range(n_reac):
+for i in range(len(list_reac)):
     print("\n num de reaction = "+str(i)+"")
     reac = list_reac[i]
     compos_reac = (reac.split(' '))
@@ -57,13 +52,11 @@ for i in range(n_reac):
           h[i] = [compos_reac[0], compos_reac[1]]
     elif list_type[i] == "unaire":
           h[i] = [compos_reac[0]]
-    elif list_type [i] == "ternaire":
-          h[i] = [compos_reac[0], compos_reac[1], compos_reac[2]]
     else:
           print("type de reaction non reconnue")
           exit(2)
 
-    #recuperation des vecteurs de coefficients stoechiométriques pour chaque reactions
+    #recuperation des vecteurs de coefficients stoechiomÃ©triques pour chaque reactions
     nu[i]={}
     #print compos
     for cg in compos:
@@ -75,20 +68,18 @@ for i in range(n_reac):
               isnum = (num == 0 or num == 1)
           if list_type[i] == "unaire":
               isnum = (num == 0)
-          if list_type[i] == "ternaire":
-              isnum = (num == 0 or num == 1 or num ==2)
-          if c == cg and (isnum): #réactions à 2 réactifs
+          if c == cg and (isnum): #rÃ©actions Ã  2 rÃ©actifs
               nu[i][cg] += -1.
-          if c == cg and (not isnum): #réactions à 2 réactifs
+          if c == cg and (not isnum): #rÃ©actions Ã  2 rÃ©actifs
               nu[i][cg] +=  1.
           else:
               nu[i][cg] +=  0.
           num+=1
-print("\nles listes de reactifs (h) pour chaque reaction")
+print("\nles listes de rÃ©actifs (h) pour chaque reaction")
 print(h)
-print("les coefficients stoechiometriques (nu) pour chaque reaction")
+print("les coefficients stoechiomÃ©triques (nu) pour chaque reaction")
 print(nu)
-# population de particules représentant la condition initiale
+# population de particules reprÃ©sentant la condition initiale
 PMC=[]
 for nmc in range(Nmc):
     w=1. / Nmc
@@ -109,7 +100,7 @@ cmd+="\n"+str(tps)+" "
 for c in compos:
  cmd+=str(eta[c]/vol)+" "
 
-print("\n En cours de calcul")
+print("\n dÃ©but du calcul")
 
 while tps < temps_final:
 
@@ -127,7 +118,7 @@ while tps < temps_final:
 
           # section efficace totale
           sig = 0.
-          for i in range(n_reac):
+          for i in range(len(list_reac)):
               prod = 1.
               for H in h[i]:
                   prod *= pmc["densities"][H]
@@ -135,10 +126,6 @@ while tps < temps_final:
               exposant = 1
               if list_type[i] == "unaire":
                   exposant = 0
-              if list_type[i] == "binaire":
-                  exposant = 1
-              if list_type[i] == "ternaire":
-                  exposant = 2
               volr = vol **exposant
               sig+= list_sigr[i] / volr * prod
 
@@ -148,10 +135,10 @@ while tps < temps_final:
           if sig > 0.:
               tau = - log(U) / sig
 
-          # temps courant updaté
+          # temps courant updatÃ©
           tps_cur += tau
 
-          # détermination de l'évenement que la pmc va subir
+          # dÃ©termination de l'Ã©venement que la pmc va subir
           if tps_cur > dt:
               #census
               tps_cur = dt
@@ -162,9 +149,9 @@ while tps < temps_final:
               #reaction
               U = random.random()
 
-              reac = n_reac-1
+              reac = len(list_reac)-1
               proba = 0.
-              for i in range(n_reac-1):
+              for i in range(len(list_reac)-1):
                   prod = 1.
                   for H in h[i]:
                       prod *= pmc["densities"][H]
@@ -172,10 +159,6 @@ while tps < temps_final:
                   exposant = 1
                   if list_type[i] == "unaire":
                       exposant = 0
-                  if list_type[i] == "binaire":
-                      exposant = 1
-                  if list_type[i] == "ternaire":
-                      exposant = 2
                   volr = vol **exposant
                   proba+= list_sigr[i] / volr * prod
 
@@ -192,13 +175,11 @@ while tps < temps_final:
    cmdt+=str(eta[c] / vol)+" "
   cmd+="\n"+cmdt
 
-print("\n Fin du calcul")
 output = open("rez.txt",'w')
 output.write(cmd)
 output.close()
 
-# configuration gnuplot pour le dessin
-cmd_gnu="set sty da l; set grid; set xl 'Temps'; set yl 'Densite des especes'; plot "
+cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
 i=3
 cmd_gnu+="'rez.txt' lt 1 w lp  t '"+str(compos[0])+"'"
 for c in compos:
