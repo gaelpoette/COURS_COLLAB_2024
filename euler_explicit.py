@@ -75,7 +75,6 @@ t_start = 0.0
 t_end = 10.0
 dt = 0.01  
 
-# Appel de la fonction
 time, eta_e, eta_A, eta_B = euler_explicit_2(sigma_0, V, eta_e0, eta_A0, eta_B0, t_start, t_end, dt)
 
 # Affichage des résultats
