@@ -97,13 +97,15 @@ for i in range(len(list_reac)):
     h[i] = reactifs
 
     isnum=0
-    # if list_type[i] == "binaire":
-    #       h[i] = [compos_reac[0], compos_reac[1]]
-    # elif list_type[i] == "unaire":
-    #       h[i] = [compos_reac[0]]
-    # else:
-    #       print("type de reaction non reconnue")
-    #       exit(2)
+    if list_type[i] == "binaire":
+          h[i] = [compos_reac[0], compos_reac[1]]
+    elif list_type[i] == "unaire":
+          h[i] = [compos_reac[0]]
+    elif list_type [i] == "ternaire":
+          h[i] = [compos_reac[0], compos_reac[1], compos_reac[2]]
+    else:
+          print("type de reaction non reconnue")
+          exit(2)
 
     #recuperation des vecteurs de coefficients stoechiométriques pour chaque reactions
     nu[i]={}
@@ -111,25 +113,21 @@ for i in range(len(list_reac)):
     for cg in compos:
         nu[i][cg] = 0.
         num = 0
-        for c in reactifs:
-            if c==cg:
-                nu[i][cg] += -1.
-        for c in produits:
-            if c == cg:
-                nu[i][cg] += 1.
-        # for c in compos_reac:
-        #   isnum=0
-        #   if list_type[i] == "binaire":
-        #       isnum = (num == 0 or num == 1)
-        #   if list_type[i] == "unaire":
-        #       isnum = (num == 0)
-        #   if c == cg and (isnum): #réactions à 2 réactifs
-        #       nu[i][cg] += -1.
-        #   if c == cg and (not isnum): #réactions à 2 réactifs
-        #       nu[i][cg] +=  1.
-        #   else:
-        #       nu[i][cg] +=  0.
-        #   num+=1
+        for c in compos_reac:
+          isnum=0
+          if list_type[i] == "binaire":
+              isnum = (num == 0 or num == 1)
+          if list_type[i] == "unaire":
+              isnum = (num == 0)
+          if list_type[i] == "ternaire":
+              isnum = (num == 0 or num == 1 or num ==2)
+          if c == cg and (isnum): #réactions à 2 réactifs
+              nu[i][cg] += -1.
+          if c == cg and (not isnum): #réactions à 2 réactifs
+              nu[i][cg] +=  1.
+          else:
+              nu[i][cg] +=  0.
+          num+=1
 print("\nles listes de réactifs (h) pour chaque reaction")
 print(h)
 print("les coefficients stoechiométriques (nu) pour chaque reaction")
@@ -155,7 +153,11 @@ cmd+="\n"+str(tps)+" "
 for c in compos:
     cmd+=str(eta[c]/vol)+" "
 
+<<<<<<< HEAD
 print("\n début du calcul")
+=======
+print("\n En cours de calcul")
+>>>>>>> OK
 
 while tps < temps_final:
 
@@ -178,7 +180,15 @@ while tps < temps_final:
                 for H in h[i]:
                     prod *= pmc["densities"][H]
 
-                exposant = len(H)-1
+              exposant = 1
+              if list_type[i] == "unaire":
+                  exposant = 0
+              if list_type[i] == "binaire":
+                  exposant = 1
+              if list_type[i] == "ternaire":
+                  exposant = 2
+              volr = vol **exposant
+              sig+= list_sigr[i] / volr * prod
 
                 volr = vol **exposant
                 sig+= list_sigr[i] / volr * prod
@@ -203,13 +213,15 @@ while tps < temps_final:
                 #reaction
                 U = random.random()
 
-                reac = len(list_reac)-1
-                reac = len(list_reac)-1
-                proba = 0.
-                for i in range(len(list_reac)-1):
-                    prod = 1.
-                    for H in h[i]:
-                        prod *= pmc["densities"][H]
+                  exposant = 1
+                  if list_type[i] == "unaire":
+                      exposant = 0
+                  if list_type[i] == "binaire":
+                      exposant = 1
+                  if list_type[i] == "ternaire":
+                      exposant = 2
+                  volr = vol **exposant
+                  proba+= list_sigr[i] / volr * prod
 
                     exposant = len(H)-1
                     
@@ -229,6 +241,7 @@ while tps < temps_final:
         cmdt+=str(eta[c] / vol)+" "
     cmd+="\n"+cmdt
 
+print("\n Fin du calcul")
 output = open("rez.txt",'w')
 output.write(cmd)
 output.close()

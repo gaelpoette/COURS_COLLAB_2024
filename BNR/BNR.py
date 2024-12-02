@@ -8,7 +8,7 @@ import random
 import numpy as np
 
 os.chdir("repro")
-os.system("cp param.py ../../ ")
+os.system("\cp param.py ../../ ")
 os.system("python3 ../../ode_mc.py")
 os.system("diff rez.txt rez_ref.txt > listing")
 listing = open("listing","r")
@@ -21,4 +21,17 @@ else:
     print("Test repro KO")
 os.chdir("..")
 
-os.system("rm repro/rez.txt repro/listing repro/gnu.plot")
+
+os.chdir("ternaire")
+os.system("\cp param.py ../../ ")
+os.system("python3 ../../ode_mc.py")
+print("Ce test valide le ternaire avec un coef stoch = 0")
+os.chdir("..")
+
+os.chdir("sol_exacte")
+os.system("\cp param.py ../../ ")
+os.system("python3 ../../ode_mc.py")
+os.system("gnuplot GNU.plot")
+print("Visuellement, les courbes 'ref' et 'code' doivent être proches")
+os.chdir("..")
+
