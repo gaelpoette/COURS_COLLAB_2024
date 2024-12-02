@@ -1,3 +1,4 @@
+
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 
@@ -5,7 +6,8 @@ from math import *
 from string import *
 import os
 import random
-
+#fixer la graine
+random.seed(100)
 
 # importation des paramètres
 from param import *
@@ -33,8 +35,7 @@ def save_sol(output_path=False, compos=False):
         print("ERROR: Parametre d'entree de la fonction save_sol non valide \n")
         exit(1)
 
-#fixer la graine
-random.seed(100)
+
 
 if 'list_reac' not in globals():
   print("ATTENTION! La variable list_react n'existe pas")
@@ -42,37 +43,42 @@ if 'list_reac' not in globals():
 
 print("liste des reactions")
 print(list_reac)
-n_reac = len(list_reac)
-if (not(n_reac==len(list_sigr))):
+if (not(len(list_reac)==len(list_sigr))):
   print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
   exit(1)
 
+
+# fonction pour la lecture de la liste des compositions des réactions
+def compos(list_reac):
+    compos = []
+    for i in range(len(list_reac)):
+        compos_reac=(list_reac[i].split(' '))
+        for j in range(len(compos_reac)):
+            if not(compos_reac[j] in compos):
+                compos.append(compos_reac[j])
+    return compos
 # lecture de la liste des compositions des réactions
-compos=[]
-
-
-for i in range(n_reac): 
-  compos_reac=(list_reac[i].split(' '))
-  for j in range(len(compos_reac)):
-     if not(compos_reac[j] in compos):
-       compos.append(compos_reac[j])
-
+compos=compos(list_reac)
 print("liste des especes")
 print(compos)
 
-#"conditions initiales en eta codée en dur pour l'instant
-eta={}
-for c in compos:
-    eta[c]=0.
-    if c=="Ar" or c=="e^-":
-      eta[c] = 1. * vol
-	
+#fonction pour l'initialisation
+def eta(compos, vol):
+    eta = {}
+    for c in compos:
+        if c in ["Ar", "e^-"]:
+            eta[c] = 1. * vol
+    return eta
+
+#conditions initiales en eta 
+eta = eta(compos, vol)	
 print("conditions initiales des espèces")
 print(eta)
 
+
 h={}
 nu={}
-for i in range(n_reac):
+for i in range(len(list_reac)):
     print("\n num de reaction = "+str(i)+"")
     reac = list_reac[i]
     compos_reac = (reac.split(' '))
@@ -133,7 +139,8 @@ cmd+="\n"+str(tps)+" "
 for c in compos:
  cmd+=str(eta[c]/vol)+" "
 
-print("\n calcul en cours")
+print("\n début du calcul")
+print("\n début du calcul")
 
 while tps < temps_final:
 
@@ -151,7 +158,7 @@ while tps < temps_final:
 
           # section efficace totale
           sig = 0.
-          for i in range(n_reac):
+          for i in range(len(list_reac)):
               prod = 1.
               for H in h[i]:
                   prod *= pmc["densities"][H]
@@ -182,9 +189,10 @@ while tps < temps_final:
               #reaction
               U = random.random()
 
-              reac = n_reac-1
+              reac = len(list_reac)-1
+              reac = len(list_reac)-1
               proba = 0.
-              for i in range(n_reac-1):
+              for i in range(len(list_reac)-1):
                   prod = 1.
                   for H in h[i]:
                       prod *= pmc["densities"][H]
@@ -208,9 +216,23 @@ while tps < temps_final:
    cmdt+=str(eta[c] / vol)+" "
   cmd+="\n"+cmdt
 
-print("\n fin du calcul")
+output = open("rez.txt",'w')
+output.write(cmd)
+output.close()
+#Faire un plot en utilisant "gnuplot"
+cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
+#Faire un plot en utilisant "gnuplot"
+cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
+i=3
+cmd_gnu+="'rez.txt' lt 1 w lp  t '"+str(compos[0])+"'"
+for c in compos:
+   if not(c==compos[0]):
+     cmd_gnu+=",'' u 1:"+str(i)+" lt "+str(i)+" w lp t '"+str(compos[i-2])+"'"
+     i+=1
 
-save_sol(output_path="rez.txt", compos=compos)
+cmd_gnu+=";pause -1"
+output = open("gnu.plot",'w')
+output.write(cmd_gnu)
+output.close()
 
 os.system("gnuplot gnu.plot")
-
