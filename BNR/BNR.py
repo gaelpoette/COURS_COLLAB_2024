@@ -27,3 +27,9 @@ os.system("python3 ../../ode_mc.py")
 print("Ce test valide le ternaire avec un coef stoch = 0")
 os.chdir("..")
 
+os.chdir("sol_exacte")
+os.system("\cp param.py ../../ ")
+os.system("python3 ../../ode_mc.py")
+print("Il reste à coder une référence")
+os.chdir("..")
+
