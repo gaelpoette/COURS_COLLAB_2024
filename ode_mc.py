@@ -25,10 +25,11 @@ compos=[]
 
 
 for i in range(n_reac): 
-  compos_reac=(list_reac[i].split(' '))
-  for j in range(len(compos_reac)):
-     if not(compos_reac[j] in compos):
-       compos.append(compos_reac[j])
+    compos_reac=(list_reac[i].split(' '))
+    compos_reac= [compos for compos in compos_reac if compos != "->"] 
+    for j in range(len(compos_reac)):
+        if not(compos_reac[j] in compos):
+            compos.append(compos_reac[j])
 
 print("liste des especes")
 print(compos)
@@ -38,7 +39,7 @@ eta={}
 for c in compos:
     eta[c]=0.
     if c=="Ar" or c=="e^-":
-      eta[c] = 1. * vol
+        eta[c] = 1. * vol
 	
 print("conditions initiales des espèces")
 print(eta)
@@ -49,14 +50,26 @@ for i in range(n_reac):
     print("\n num de reaction = "+str(i)+"")
     reac = list_reac[i]
     compos_reac = (reac.split(' '))
-    print(compos_reac)
-    # recuperation du vecteur des reactifs
+    index_arrow = reac.index('->')
+
+    # recuperation du vecteur des reactifs i.e ceux avant '->'
+    elements_avant_arrow = (reac[:index_arrow-1]).split(' ')
+
+    # recuperation automatique du type des réactions
+    if len(elements_avant_arrow) == 2 : 
+        list_type[i] = "binaire"
+    elif len(elements_avant_arrow) == 1: 
+        list_type[i] = "unaire" 
+    else : 
+        print("type de reaction non reconnue")
+        
     print("type de reaction: "+list_type[i]+"")
+    
 
     isnum=0
-    if list_type[i] == "binaire":
+    if len(elements_avant_arrow) == 2 : # c'est à dire binaire
           h[i] = [compos_reac[0], compos_reac[1]]
-    elif list_type[i] == "unaire":
+    elif len(elements_avant_arrow) == 1: # c'est à dire unaire
           h[i] = [compos_reac[0]]
     else:
           print("type de reaction non reconnue")
@@ -69,18 +82,18 @@ for i in range(n_reac):
         nu[i][cg] = 0.
         num = 0
         for c in compos_reac:
-          isnum=0
-          if list_type[i] == "binaire":
-              isnum = (num == 0 or num == 1)
-          if list_type[i] == "unaire":
-              isnum = (num == 0)
-          if c == cg and (isnum): #réactions à 2 réactifs
-              nu[i][cg] += -1.
-          if c == cg and (not isnum): #réactions à 2 réactifs
-              nu[i][cg] +=  1.
-          else:
-              nu[i][cg] +=  0.
-          num+=1
+            isnum=0
+            if len(elements_avant_arrow) == 2: # binaire
+                isnum = (num == 0 or num == 1)
+            if len(elements_avant_arrow) == 1: # unaire
+                isnum = (num == 0)
+            if c == cg and (isnum): #réactions à 2 réactifs
+                nu[i][cg] += -1.
+            if c == cg and (not isnum): #réactions à 2 réactifs
+                nu[i][cg] +=  1.
+            else:
+                nu[i][cg] +=  0.
+            num+=1
 print("\nles listes de réactifs (h) pour chaque reaction")
 print(h)
 print("les coefficients stoechiométriques (nu) pour chaque reaction")
@@ -98,88 +111,88 @@ for nmc in range(Nmc):
 #entete du fichier
 cmd="\n"+"#temps"+" "
 for c in compos:
- cmd+=str(c)+" "
+    cmd+=str(c)+" "
 
 it=0
 tps = 0.
 cmd+="\n"+str(tps)+" "
 for c in compos:
- cmd+=str(eta[c]/vol)+" "
+    cmd+=str(eta[c]/vol)+" "
 
 print("\n calcul en cours")
 
 while tps < temps_final:
 
-  dt = temps[it+1]-temps[it]
+    dt = temps[it+1]-temps[it]
 
-  # initialisation du tableau de tallies
-  for c in compos:
-      eta[c] = 0.
+    # initialisation du tableau de tailles
+    for c in compos:
+        eta[c] = 0.
 
-  for pmc in PMC:
-    
-      tps_cur = 0.
+    for pmc in PMC:
+        
+        tps_cur = 0.
 
-      while tps_cur < dt:
+        while tps_cur < dt:
 
-          # section efficace totale
-          sig = 0.
-          for i in range(n_reac):
-              prod = 1.
-              for H in h[i]:
-                  prod *= pmc["densities"][H]
+            # section efficace totale
+            sig = 0.
+            for i in range(n_reac):
+                prod = 1.
+                for H in h[i]:
+                    prod *= pmc["densities"][H]
 
-              exposant = 1
-              if list_type[i] == "unaire":
-                  exposant = 0
-              volr = vol **exposant
-              sig+= list_sigr[i] / volr * prod
+                exposant = 1
+                if list_type[i] == "unaire":
+                    exposant = 0
+                volr = vol **exposant
+                sig+= list_sigr[i] / volr * prod
 
-          #tirage du temps de la prochaine reaction
-          U = random.random()
-          tau = 1.e32
-          if sig > 0.:
-              tau = - log(U) / sig
+            #tirage du temps de la prochaine reaction
+            U = random.random()
+            tau = 1.e32
+            if sig > 0.:
+                tau = - log(U) / sig
 
-          # temps courant updaté
-          tps_cur += tau
+            # temps courant updaté
+            tps_cur += tau
 
-          # détermination de l'évenement que la pmc va subir
-          if tps_cur > dt:
-              #census
-              tps_cur = dt
-              for c in compos:
-                  eta[c] += pmc["densities"][c] * pmc["weight"]
+            # détermination de l'évenement que la pmc va subir
+            if tps_cur > dt:
+                #census
+                tps_cur = dt
+                for c in compos:
+                    eta[c] += pmc["densities"][c] * pmc["weight"]
 
-          else:
-              #reaction
-              U = random.random()
+            else:
+                #reaction
+                U = random.random()
 
-              reac = n_reac-1
-              proba = 0.
-              for i in range(n_reac-1):
-                  prod = 1.
-                  for H in h[i]:
-                      prod *= pmc["densities"][H]
+                reac = n_reac-1
+                proba = 0.
+                for i in range(n_reac-1):
+                    prod = 1.
+                    for H in h[i]:
+                        prod *= pmc["densities"][H]
 
-                  exposant = 1
-                  if list_type[i] == "unaire":
-                      exposant = 0
-                  volr = vol **exposant
-                  proba+= list_sigr[i] / volr * prod
+                    exposant = 1
+                    if list_type[i] == "unaire":
+                        exposant = 0
+                    volr = vol **exposant
+                    proba+= list_sigr[i] / volr * prod
 
-                  if U * sig < proba:
-                      reac = i
-                      break
+                    if U * sig < proba:
+                        reac = i
+                        break
 
-              for c in compos:
-                  pmc["densities"][c]+=nu[reac][c]
+                for c in compos:
+                    pmc["densities"][c]+=nu[reac][c]
 
-  tps+=dt
-  cmdt=""+str(tps)+" "
-  for c in compos:
-   cmdt+=str(eta[c] / vol)+" "
-  cmd+="\n"+cmdt
+    tps+=dt
+    cmdt=""+str(tps)+" "
+    for c in compos:
+        cmdt+=str(eta[c] / vol)+" "
+    cmd+="\n"+cmdt
 
 print("\n fin du calcul")
 output = open("rez.txt",'w')
@@ -190,9 +203,9 @@ cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'
 i=3
 cmd_gnu+="'rez.txt' lt 1 w lp  t '"+str(compos[0])+"'"
 for c in compos:
-   if not(c==compos[0]):
-     cmd_gnu+=",'' u 1:"+str(i)+" lt "+str(i)+" w lp t '"+str(compos[i-2])+"'"
-     i+=1
+    if not(c==compos[0]):
+        cmd_gnu+=",'' u 1:"+str(i)+" lt "+str(i)+" w lp t '"+str(compos[i-2])+"'"
+        i+=1
 
 cmd_gnu+=";pause -1"
 output = open("gnu.plot",'w')
