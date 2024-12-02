@@ -30,7 +30,7 @@ time, eta_e, eta_A = euler_explicit_1(sigma_0, V, eta_e0, eta_A0, t_start, t_end
 
 # Affichage des résultats
 plt.figure(figsize=(10, 6))
-plt.plot(time, eta_e, label=r'$\eta_E$', color='blue')
+plt.plot(time, eta_e, label=r'$\eta_e$', color='blue')
 plt.plot(time, eta_A, label=r'$\eta_A$', color='red')
 plt.xlabel('Temps (t)')
 plt.ylabel(r'$\eta$')
@@ -76,11 +76,11 @@ t_end = 10.0
 dt = 0.01  
 
 # Appel de la fonction
-time, eta_e, eta_A, eta_B = euler_explicit_3(sigma_0, V, eta_e0, eta_A0, eta_B0, t_start, t_end, dt)
+time, eta_e, eta_A, eta_B = euler_explicit_2(sigma_0, V, eta_e0, eta_A0, eta_B0, t_start, t_end, dt)
 
 # Affichage des résultats
 plt.figure(figsize=(10, 6))
-plt.plot(time, eta_e, label=r'$\eta_E$', color='blue')
+plt.plot(time, eta_e, label=r'$\eta_e$', color='blue')
 plt.plot(time, eta_A, label=r'$\eta_A$', color='red')
 plt.plot(time, eta_B, label=r'$\eta_B$', color='green')
 plt.xlabel('Temps (t)')
