@@ -1,0 +1,20 @@
+# PARAM: nb de particules MC
+Nmc = 10
+
+# PARAM: Volume
+vol = 10.0
+
+# PARAM: construction de la liste des temps d'intérêt
+t_final = 30.0
+t0 = 0.0
+dt = 1.0
+
+# PARAM: liste des réactions: codage pour dire e^-+Ar->B+C et B+C->Ar+K+L et e^-+B->C
+reac_0 = "e^-+Ar->B+C"
+reac_1 = "B+C->Ar+K+L"
+reac_2 = "e^-+B->C"
+
+# PARAM: la liste des constantes de réactions
+sigr_0 = 1.0
+sigr_1 = 2.0
+sigr_2 = 0.5
