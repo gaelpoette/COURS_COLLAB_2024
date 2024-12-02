@@ -1,3 +1,4 @@
+
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 
@@ -43,7 +44,6 @@ if 'list_reac' not in globals():
 print("liste des reactions")
 print(list_reac)
 if (not(len(list_reac)==len(list_sigr))):
-if (not(len(list_reac)==len(list_sigr))):
   print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
   exit(1)
 
@@ -78,7 +78,6 @@ print(eta)
 
 h={}
 nu={}
-for i in range(len(list_reac)):
 for i in range(len(list_reac)):
     print("\n num de reaction = "+str(i)+"")
     reac = list_reac[i]
@@ -160,7 +159,6 @@ while tps < temps_final:
           # section efficace totale
           sig = 0.
           for i in range(len(list_reac)):
-          for i in range(len(list_reac)):
               prod = 1.
               for H in h[i]:
                   prod *= pmc["densities"][H]
@@ -194,7 +192,6 @@ while tps < temps_final:
               reac = len(list_reac)-1
               reac = len(list_reac)-1
               proba = 0.
-              for i in range(len(list_reac)-1):
               for i in range(len(list_reac)-1):
                   prod = 1.
                   for H in h[i]:
@@ -239,4 +236,3 @@ output.write(cmd_gnu)
 output.close()
 
 os.system("gnuplot gnu.plot")
-
