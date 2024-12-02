@@ -8,47 +8,18 @@ import random
 
 
 # importation des paramètres
-from param import *
-
-
-def save_sol(output_path=False, compos=False):
-    if(output_path and compos):
-        output = open(output_path,'w')
-        output.write(cmd)
-        output.close()
-
-        cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
-        i=3
-        cmd_gnu+="'" + output_path + "' lt 1 w lp  t '" + str(compos[0]) + "'"
-        for c in compos:
-            if not(c==compos[0]):
-                cmd_gnu+=",'' u 1:"+str(i)+" lt "+str(i)+" w lp t '"+str(compos[i-2])+"'"
-                i+=1
-
-        cmd_gnu+=";pause -1"
-        output = open("gnu.plot",'w')
-        output.write(cmd_gnu)
-        output.close()
-    else: 
-        print("ERROR: Parametre d'entree de la fonction save_sol non valide \n")
-        exit(1)
+from fich_cas_test.param import *
 
 #fixer la graine
 random.seed(100)
 
-if 'list_reac' not in globals():
-  print("ATTENTION! La variable list_react n'existe pas")
-  exit(1)
-
 print("liste des reactions")
 print(list_reac)
-n_reac = len(list_reac)
-if (not(n_reac==len(list_sigr))):
+if (not(len(list_reac)==len(list_sigr))):
   print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
   exit(1)
 
 # lecture de la liste des compositions des réactions
-<<<<<<< HEAD
 compos=[] #compos vecteur de compositions de la réaction
 for i in range(len(list_reac)):  #Liste reac contient la réaction écrite comme une texte
   compos_reac=(list_reac[i].split(' ')) 
@@ -74,16 +45,33 @@ print("conditions initiales des espèces")
 print(eta)
 
 
-h={}
+h={} #h sert à reconnaitre la presence de réagents 
 nu={}
-for i in range(n_reac):
-    print("\n num de reaction = "+str(i)+"")
+for i in range(len(list_reac)): #3 dans ce cas
+    print("\n num de reaction = "+str(i)+"") 
     reac = list_reac[i]
-    compos_reac = (reac.split(' '))
+    compos_reac = (reac.split(' ')) #String ->  Character
     print(compos_reac)
     # recuperation du vecteur des reactifs
-    print("type de reaction: "+list_type[i]+"")
+    #print("type de reaction: "+list_type[i]+"")
 
+    reac_type = -2
+    for reac in compos_reac:
+        reac_type =  reac_type + 1
+        if(reac == ">" or reac == "->"):
+            compos_reac.remove(reac)
+            break
+    print("Type de reaction: ", reac_type)
+    
+    if reac_type==0:
+        h[i] = [compos_reac[0]]
+    elif reac_type==1:
+        h[i] =  [compos_reac[0], compos_reac[1]]
+    else:
+        print("type de reaction non reconnue")
+        exit(2)
+
+    """
     isnum=0
     if list_type[i] == "binaire":
           h[i] = [compos_reac[0], compos_reac[1]]
@@ -92,18 +80,20 @@ for i in range(n_reac):
     else:
           print("type de reaction non reconnue")
           exit(2)
+    """
 
     #recuperation des vecteurs de coefficients stoechiométriques pour chaque reactions
     nu[i]={}
+
     #print compos
     for cg in compos:
         nu[i][cg] = 0.
         num = 0
         for c in compos_reac:
           isnum=0
-          if list_type[i] == "binaire":
+          if reac_type==1:
               isnum = (num == 0 or num == 1)
-          if list_type[i] == "unaire":
+          if reac_type==0:
               isnum = (num == 0)
           if c == cg and (isnum): #réactions à 2 réactifs
               nu[i][cg] += -1.
@@ -116,6 +106,8 @@ print("\nles listes de réactifs (h) pour chaque reaction")
 print(h)
 print("les coefficients stoechiométriques (nu) pour chaque reaction")
 print(nu)
+
+
 
 # population de particules représentant la condition initiale
 PMC=[]
@@ -156,7 +148,7 @@ while tps < temps_final:
 
           # section efficace totale
           sig = 0.
-          for i in range(n_reac):
+          for i in range(len(list_reac)):
               prod = 1.
               for H in h[i]:
                   prod *= pmc["densities"][H]
@@ -187,9 +179,9 @@ while tps < temps_final:
               #reaction
               U = random.random()
 
-              reac = n_reac-1
+              reac = len(list_reac)-1
               proba = 0.
-              for i in range(n_reac-1):
+              for i in range(len(list_reac)-1):
                   prod = 1.
                   for H in h[i]:
                       prod *= pmc["densities"][H]
@@ -213,14 +205,30 @@ while tps < temps_final:
    cmdt+=str(eta[c] / vol)+" "
   cmd+="\n"+cmdt
 
+  #Euler explicite pour resoudre 
+
+
+
 print("\n fin du calcul")
+
 
 #output 
 output = open("rez.txt",'w')
 output.write(cmd)
 output.close()
 
-save_sol(output_path="rez.txt", compos=compos)
+cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
+i=3
+cmd_gnu+="'rez.txt' lt 1 w lp  t '"+str(compos[0])+"'"
+for c in compos:
+   if not(c==compos[0]):
+     cmd_gnu+=",'' u 1:"+str(i)+" lt "+str(i)+" w lp t '"+str(compos[i-2])+"'"
+     i+=1
+
+cmd_gnu+=";pause -1"
+output = open("gnu.plot",'w')
+output.write(cmd_gnu)
+output.close()
 
 os.system("gnuplot gnu.plot")
 
