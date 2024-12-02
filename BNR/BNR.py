@@ -8,7 +8,7 @@ import random
 import numpy as np
 
 os.chdir("repro")
-os.system("cp param.py ../../ ")
+os.system("\cp param.py ../../ ")
 os.system("python3 ../../ode_mc.py")
 os.system("diff rez.txt rez_ref.txt > listing")
 listing = open("listing","r")
@@ -19,5 +19,11 @@ if compt == 0:
     print("Test repro OK")
 else:
     print("Test repro KO")
+os.chdir("..")
+
+os.chdir("ternaire")
+os.system("\cp param.py ../../ ")
+os.system("python3 ../../ode_mc.py")
+print("Ce test valide le ternaire avec un coef stoch = 0")
 os.chdir("..")
 
