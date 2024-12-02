@@ -21,11 +21,8 @@ sig_r_0 = 1.0;
 sig_r_1 = 2.0;
 sig_r_2 = 0.5;
 sig_r_3 = 0.0;
-
 # PARAM: la liste des constantes de réactions
 list_sigr={0 : sig_r_0, 1 : sig_r_1, 2 : sig_r_2, 3: sig_r_3}
 
 # PARAM MANQUANT: pour l'instant, la liste des conditions initiales est en dur...
 # pour comprendre comment elles sont codées, faut regarder...
-
-list_CI={"Ar":1.0,"e^-":1.0}

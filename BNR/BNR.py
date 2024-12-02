@@ -28,3 +28,16 @@ os.system("python3 ../../ode_mc.py")
 os.chdir("..")
 
 os.system("rm repro/rez.txt repro/listing repro/gnu.plot")
+os.chdir("ternaire")
+os.system("\cp param.py ../../ ")
+os.system("python3 ../../ode_mc.py")
+print("Ce test valide le ternaire avec un coef stoch = 0")
+os.chdir("..")
+
+os.chdir("sol_exacte")
+os.system("\cp param.py ../../ ")
+os.system("python3 ../../ode_mc.py")
+os.system("gnuplot GNU.plot")
+print("Visuellement, les courbes 'ref' et 'code' doivent être proches")
+os.chdir("..")
+
