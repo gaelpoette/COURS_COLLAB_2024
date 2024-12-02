@@ -37,15 +37,14 @@ def save_sol(output_path=False, compos=False):
 
 
 if 'list_reac' not in globals():
-  print("ATTENTION! La variable list_react n'existe pas")
-  exit(1)
+    print("ATTENTION! La variable list_react n'existe pas")
+    exit(1)
 
 print("liste des reactions")
 print(list_reac)
 if (not(len(list_reac)==len(list_sigr))):
-if (not(len(list_reac)==len(list_sigr))):
-  print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
-  exit(1)
+    print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
+    exit(1)
 
 
 # fonction pour la lecture de la liste des compositions des réactions
@@ -78,7 +77,6 @@ print(eta)
 
 h={}
 nu={}
-for i in range(len(list_reac)):
 for i in range(len(list_reac)):
     print("\n num de reaction = "+str(i)+"")
     reac = list_reac[i]
@@ -160,7 +158,6 @@ while tps < temps_final:
           # section efficace totale
           sig = 0.
           for i in range(len(list_reac)):
-          for i in range(len(list_reac)):
               prod = 1.
               for H in h[i]:
                   prod *= pmc["densities"][H]
@@ -194,7 +191,6 @@ while tps < temps_final:
               reac = len(list_reac)-1
               reac = len(list_reac)-1
               proba = 0.
-              for i in range(len(list_reac)-1):
               for i in range(len(list_reac)-1):
                   prod = 1.
                   for H in h[i]:
