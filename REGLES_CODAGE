@@ -8,7 +8,6 @@ pas de variable dont le nom est un seul caractère
 
 2. Noms des fonctions :
    - Les noms doivent décrire clairement le rôle de la fonction.
-     Exemple : calculer_somme au lieu de calcS.
 
 4. Longueur des lignes :
    - Limiter la longueur des lignes à 79 caractères pour une meilleure lisibilité.
