@@ -12,18 +12,15 @@ from tkinter import ttk
 
     
 def run_script_in_terminal():
-    # Path to your bash script or Python script
-    #command = os.path.join(os.path.dirname(__file__), "../ode_mc.py") # or ['python3', 'your_python_script.py']
-    #command = os.system("python3 ode_mc.py")
+
     os.system("python3 ode_mc.py")
 
-    # Run the command in the terminal without capturing the output in the GUI
-    # subprocess.run(command, shell=True)
 
-# def start_script():
-#     # Run the script in a separate thread to keep the GUI responsive
-#     threading.Thread(target=run_script_in_terminal, daemon=True).start()
     
+def Bnr_test():
+    
+    os.systeme("cd BNR")
+    os.systeme("python BNR.py")
     
 
 # def show_format():
@@ -233,6 +230,16 @@ separator.grid(row=4, column=0, columnspan=2, padx=10, pady=10, sticky="ew")
 # Run button
 button_run = tk.Button(root, text="Run", font=font, bg=button_color, fg="white", command=run_script_in_terminal)
 button_run.grid(row=5, column=0, columnspan=2, pady=10, padx=10)
+
+separator = ttk.Separator(root, orient='horizontal')
+separator.grid(row=6, column=0, columnspan=2, padx=10, pady=10, sticky="ew")
+
+# Run button
+frame_Test = tk.Frame(root, bg=bg_color)
+frame_Test.grid(row=7, column=0, padx=10, pady=10)
+tk.Label(frame_Test, text="Test:", font=font, bg=bg_color, fg=text_color).grid(row=0, column=0, sticky=tk.W, padx=5, pady=5)
+button_run = tk.Button(frame_Test, text="Test BNR", font=font, bg=button_color, fg="white", command=run_script_in_terminal)
+button_run.grid(row=1, column=0, pady=10, padx=10)
 
 # Load the parameters from the file
 load_parameters()
