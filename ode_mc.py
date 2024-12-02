@@ -10,9 +10,6 @@ import random
 # importation des paramètres
 from param import *
 
-#fixer la graine
-random.seed(100)
-
 print("liste des reactions")
 print(list_reac)
 if (not(len(list_reac)==len(list_sigr))):
@@ -103,7 +100,7 @@ cmd+="\n"+str(tps)+" "
 for c in compos:
  cmd+=str(eta[c]/vol)+" "
 
-print("\n calcul en cours")
+print("\n début du calcul")
 
 while tps < temps_final:
 
@@ -148,6 +145,11 @@ while tps < temps_final:
               for c in compos:
                   eta[c] += pmc["densities"][c] * pmc["weight"]
 
+                  # **Ajout du Test de positivité pour census**
+                  if pmc["densities"][c] < 0:
+                      print(f"ERREUR! Densité négative détectée pour l'espèce '{c}' dans PMC à t = {tps:.2f}.")
+                      exit(1)
+
           else:
               #reaction
               U = random.random()
@@ -171,6 +173,11 @@ while tps < temps_final:
 
               for c in compos:
                   pmc["densities"][c]+=nu[reac][c]
+
+                  # **Ajout du Test de positivité après réaction**
+                  if pmc["densities"][c] < 0:
+                      print(f"ERREUR! Densité négative détectée pour l'espèce '{c}' dans PMC à t = {tps:.2f}.")
+                      exit(1)
 
   tps+=dt
   cmdt=""+str(tps)+" "
@@ -196,4 +203,3 @@ output.write(cmd_gnu)
 output.close()
 
 os.system("gnuplot gnu.plot")
-
