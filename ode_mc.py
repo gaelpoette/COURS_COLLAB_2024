@@ -55,21 +55,23 @@ for i in range(len(list_reac)): #3 dans ce cas
     # recuperation du vecteur des reactifs
     #print("type de reaction: "+list_type[i]+"")
 
-    reac_type = -2
+    reac_type = -1
     for reac in compos_reac:
         reac_type =  reac_type + 1
         if(reac == ">" or reac == "->"):
             compos_reac.remove(reac)
             break
     print("Type de reaction: ", reac_type)
-    
-    if reac_type==0:
-        h[i] = [compos_reac[0]]
-    elif reac_type==1:
-        h[i] =  [compos_reac[0], compos_reac[1]]
-    else:
-        print("type de reaction non reconnue")
+
+    if(reac_type>2):
+        print("Type de reaction non reconnue")
         exit(2)
+
+    h[i] = [] 
+
+    for k in range(reac_type):
+        print("K val: ",k)
+        h[i].append(compos_reac[k])
 
     """
     isnum=0
@@ -91,9 +93,9 @@ for i in range(len(list_reac)): #3 dans ce cas
         num = 0
         for c in compos_reac:
           isnum=0
-          if reac_type==1:
+          if reac_type==2:
               isnum = (num == 0 or num == 1)
-          if reac_type==0:
+          if reac_type==1:
               isnum = (num == 0)
           if c == cg and (isnum): #réactions à 2 réactifs
               nu[i][cg] += -1.
