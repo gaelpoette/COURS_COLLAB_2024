@@ -36,10 +36,9 @@ print(compos)
 #"conditions initiales en eta codée en dur pour l'instant
 eta={}
 for c in compos:
-    eta[c]=0.
-    if c=="Ar" or c=="e^-":
-      eta[c] = 1. * vol
-	
+    eta[c]=conditions_initiales[c]
+    print("eta cond initiale:", eta[c])
+    
 print("conditions initiales des espèces")
 print(eta)
 
