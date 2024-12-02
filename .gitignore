@@ -2,3 +2,8 @@ __pycache__
 */__pycache__
 */*/__pycache__
 *~
+rez.txt
+*/rez.txt
+*/gnu.plot
+*/.ipynb_*
+*/.ipynb_*/*
