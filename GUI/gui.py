@@ -69,9 +69,9 @@ def load_parameters():
         "t_final": 30.0,
         "t0": 0.0,
         "dt": 1.0,
-        "reac_0": "e^-+Ar->B+C",
-        "reac_1": "B+C->Ar+K+L",
-        "reac_2": "e^-+B->C",
+        "reac_0": "e^- + Ar -> B + C",
+        "reac_1": "B + C -> Ar + K + L",
+        "reac_2": "e^- + B -> C",
         "sigr_0": 1.0,
         "sigr_1": 2.0,
         "sigr_2": 0.5
@@ -126,7 +126,7 @@ def save_parameters():
             file.write(f"t0 = {t0}\n")
             file.write(f"dt = {dt}\n\n")
 
-            file.write("# PARAM: liste des réactions: codage pour dire e^-+Ar->B+C et B+C->Ar+K+L et e^-+B->C\n")
+            file.write("# PARAM: liste des réactions: codage exemple: e^- + Ar -> B + C\n")
             file.write(f"reac_0 = \"{reac_0}\"\n")
             file.write(f"reac_1 = \"{reac_1}\"\n")
             file.write(f"reac_2 = \"{reac_2}\"\n\n")
