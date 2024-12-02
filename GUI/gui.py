@@ -7,15 +7,12 @@ import threading
 import subprocess
 import os
 from tkinter import ttk
-
-
-
-    
+ 
 def run_script_in_terminal():
     # Path to your bash script or Python script
     #command = os.path.join(os.path.dirname(__file__), "../ode_mc.py") # or ['python3', 'your_python_script.py']
     #command = os.system("python3 ode_mc.py")
-    os.system("python3 ode_mc.py")
+    os.system("python3 ../ode_mc.py")
 
     # Run the command in the terminal without capturing the output in the GUI
     # subprocess.run(command, shell=True)
@@ -24,8 +21,6 @@ def run_script_in_terminal():
 #     # Run the script in a separate thread to keep the GUI responsive
 #     threading.Thread(target=run_script_in_terminal, daemon=True).start()
     
-    
-
 # def show_format():
 #     format_text = (
 #         "The 'parameters.dat' file should have the following format:\n\n"

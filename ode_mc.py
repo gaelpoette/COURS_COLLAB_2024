@@ -79,15 +79,16 @@ print("liste des especes")
 print(compos)
 
 #fonction pour l'initialisation
-def eta(compos, vol):
-    eta = {}
-    for c in compos:
-        if c in ["Ar", "e^-"]:
-            eta[c] = 1. * vol
-    return eta
+CLE = []
+for cle,valeur in list_CI.items():
+    CLE.append(cle)
 
-#conditions initiales en eta 
-eta = eta(compos, vol)	
+eta = {}
+for c in compos:
+    if c in CLE :
+        eta[c] = list_CI[c]*vol
+    else:
+        eta[c] = 0.
 print("conditions initiales des espèces")
 print(eta)
 
