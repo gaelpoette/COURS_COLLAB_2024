@@ -22,3 +22,4 @@ else:
     os.system("gnuplot gnu.plot")
 os.chdir("..")
 
+os.system("rm repro/rez.txt repro/listing repro/gnu.plot")
