@@ -16,15 +16,17 @@ for it in range(Nt):
 list_reac={0 : "e^- Ar -> B C", 1 : "B C -> Ar K L", 2 : "e^- B -> C"}
 
 # PARAM: initialisation de la liste des types de réactions: 
-list_type={0:"", 1:"", 2:""}
+list_type={0:"", 1:"", 2:"",3:""}
 
 
 # les constantes des réactions
 sig_r_0 = 1.0
 sig_r_1 = 2.0
 sig_r_2 = 0.5
+sig_r_3 = 0.0
+
 # PARAM: la liste des constantes de réactions
-list_sigr={0 : sig_r_0, 1 : sig_r_1, 2 : sig_r_2}
+list_sigr={0 : sig_r_0, 1 : sig_r_1, 2: sig_r_2, 3 : sig_r_3}
 
 # PARAM: Activer ou désactiver les messages de débogage (1 pour désactiver, 0 pour activer)
 debug = 1
