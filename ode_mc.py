@@ -56,7 +56,6 @@ for i in range(n_reac):
     debug_print("\n num de reaction = "+str(i)+"")
     reac = list_reac[i]
     compos_reac = (reac.split(' '))
-<<<<<<< HEAD
     index_arrow = reac.index('->')
 
     # recuperation du vecteur des reactifs i.e ceux avant '->'
@@ -74,12 +73,6 @@ for i in range(n_reac):
         
     print("type de reaction: "+list_type[i]+"")
     
-=======
-    debug_print(compos_reac)
-    # recuperation du vecteur des reactifs
-    debug_print("type de reaction: "+list_type[i]+"")
->>>>>>> deb05a7c3c84ec1d97897d38d0b1e2035011b70c
-
     isnum=0
     if len(elements_avant_arrow) == 2 : # c'est à dire binaire
           h[i] = [compos_reac[0], compos_reac[1]]
@@ -99,7 +92,6 @@ for i in range(n_reac):
         nu[i][cg] = 0.
         num = 0
         for c in compos_reac:
-<<<<<<< HEAD
             isnum=0
             if len(elements_avant_arrow) == 3: # ternaire
                 isnum = (num == 0 or num == 1 or num == 2)
@@ -118,26 +110,6 @@ print("\nles listes de réactifs (h) pour chaque reaction")
 print(h)
 print("les coefficients stoechiométriques (nu) pour chaque reaction")
 print(nu)
-=======
-          isnum=0
-          if list_type[i] == "binaire":
-              isnum = (num == 0 or num == 1)
-          if list_type[i] == "unaire":
-              isnum = (num == 0)
-          if list_type[i] == "ternaire":
-              isnum = (num == 0 or num == 1 or num ==2)
-          if c == cg and (isnum): #réactions à 2 réactifs
-              nu[i][cg] += -1.
-          if c == cg and (not isnum): #réactions à 2 réactifs
-              nu[i][cg] +=  1.
-          else:
-              nu[i][cg] +=  0.
-          num+=1
-debug_print("\nles listes de réactifs (h) pour chaque reaction")
-debug_print(h)
-debug_print("les coefficients stoechiométriques (nu) pour chaque reaction")
-debug_print(nu)
->>>>>>> deb05a7c3c84ec1d97897d38d0b1e2035011b70c
 # population de particules représentant la condition initiale
 PMC=[]
 for nmc in range(Nmc):
