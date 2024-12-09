@@ -22,7 +22,10 @@ list_type={0:"", 1:"", 2:""}
 # les constantes des réactions
 sig_r_0 = 1.0
 sig_r_1 = 2.0
+<<<<<<< HEAD
 sig_r_2 = 0.5
+=======
+>>>>>>> main
 # PARAM: la liste des constantes de réactions
 list_sigr={0 : sig_r_0, 1 : sig_r_1, 2 : sig_r_2}
 
