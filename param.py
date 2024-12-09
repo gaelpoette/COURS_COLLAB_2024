@@ -2,6 +2,8 @@
 Nmc=10
 # PARAM: Volume
 vol = 10.
+# PARAM: verbose flag (True for detailed output, False for less output)
+verbose = False
 
 # PARAM: construction de la liste des temps d'intérêt
 temps_final = 30

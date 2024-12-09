@@ -13,8 +13,9 @@ from param import *
 #fixer la graine
 random.seed(100)
 
-print("liste des reactions")
-print(list_reac)
+if verbose:
+    print("liste des reactions")
+    print(list_reac)
 n_reac = len(list_reac)
 if (not(n_reac==len(list_sigr))):
   print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
@@ -29,9 +30,9 @@ for i in range(n_reac):
   for j in range(len(compos_reac)):
      if not(compos_reac[j] in compos):
        compos.append(compos_reac[j])
-
-print("liste des especes")
-print(compos)
+if verbose:
+    print("liste des especes")
+    print(compos)
 
 #"conditions initiales en eta codée en dur pour l'instant
 eta={}
@@ -40,8 +41,10 @@ for c in compos:
     if c=="Ar" or c=="e^-":
       eta[c] = 1. * vol
 	
-print("conditions initiales des espèces")
-print(eta)
+if verbose:
+    print("conditions initiales des espèces")
+    print(eta)
+
 
 h={}
 nu={}
@@ -81,10 +84,12 @@ for i in range(n_reac):
           else:
               nu[i][cg] +=  0.
           num+=1
-print("\nles listes de réactifs (h) pour chaque reaction")
-print(h)
-print("les coefficients stoechiométriques (nu) pour chaque reaction")
-print(nu)
+
+if verbose:
+    print("\nles listes de réactifs (h) pour chaque reaction")
+    print(h)
+    print("les coefficients stoechiométriques (nu) pour chaque reaction")
+    print(nu)
 # population de particules représentant la condition initiale
 PMC=[]
 for nmc in range(Nmc):
