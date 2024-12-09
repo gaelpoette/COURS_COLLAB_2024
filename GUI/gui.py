@@ -12,39 +12,17 @@ from tkinter import ttk
 
     
 def run_script_in_terminal():
-
     os.system("python3 ode_mc.py")
 
 
-    
 def Bnr_test():
+    os.system("echo 'Petit probleme avec les path. En cours de réglage...'")
+    # os.system("python BNR/BNR.py")
+    # os.system("cd ../")
     
-    os.systeme("cd BNR")
-    os.systeme("python BNR.py")
-    
+def eta_evolution():
+    os.system("python euler_explicit.py")
 
-# def show_format():
-#     format_text = (
-#         "The 'parameters.dat' file should have the following format:\n\n"
-#         "# PARAM: nb de particules MC"
-#         "Nmc = <integer>\n"
-#         "# PARAM: Volume"
-#         "vol = <float>\n"
-#         "# PARAM: construction de la liste des temps d'intérêt"
-#         "t_final = <float>\n"
-#         "t0 = <float>\n"
-#         "dt = <float>\n"
-#         "# PARAM: liste des réactions: codage pour dire e^-+Ar->B+C et B+C->Ar+K+L et e^-+B->C"
-#         "reac_0 = <string>\n"
-#         "reac_1 = <string>\n"
-#         "reac_2 = <string>\n"
-#         "# PARAM: la liste des constantes de réactions"
-#         "sigr_0 = <float>\n"
-#         "sigr_1 = <float>\n"
-#         "sigr_2 = <float>\n"
-        
-#     )
-#     messagebox.showinfo("Parameter File Format", format_text)
     
 def show_parameters():
     # Display the contents of parameters.dat file
@@ -69,9 +47,9 @@ def load_parameters():
         "t_final": 30.0,
         "t0": 0.0,
         "dt": 1.0,
-        "reac_0": "e^-+Ar->B+C",
-        "reac_1": "B+C->Ar+K+L",
-        "reac_2": "e^-+B->C",
+        "reac_0": "e^- + Ar -> B + C",
+        "reac_1": "B + C -> Ar + K + L",
+        "reac_2": "e^- + B -> C",
         "sigr_0": 1.0,
         "sigr_1": 2.0,
         "sigr_2": 0.5
@@ -126,7 +104,7 @@ def save_parameters():
             file.write(f"t0 = {t0}\n")
             file.write(f"dt = {dt}\n\n")
 
-            file.write("# PARAM: liste des réactions: codage pour dire e^-+Ar->B+C et B+C->Ar+K+L et e^-+B->C\n")
+            file.write("# PARAM: liste des réactions: codage exemple: e^- + Ar -> B + C\n")
             file.write(f"reac_0 = \"{reac_0}\"\n")
             file.write(f"reac_1 = \"{reac_1}\"\n")
             file.write(f"reac_2 = \"{reac_2}\"\n\n")
@@ -234,12 +212,21 @@ button_run.grid(row=5, column=0, columnspan=2, pady=10, padx=10)
 separator = ttk.Separator(root, orient='horizontal')
 separator.grid(row=6, column=0, columnspan=2, padx=10, pady=10, sticky="ew")
 
-# Run button
+# Test buttons
 frame_Test = tk.Frame(root, bg=bg_color)
 frame_Test.grid(row=7, column=0, padx=10, pady=10)
 tk.Label(frame_Test, text="Test:", font=font, bg=bg_color, fg=text_color).grid(row=0, column=0, sticky=tk.W, padx=5, pady=5)
-button_run = tk.Button(frame_Test, text="Test BNR", font=font, bg=button_color, fg="white", command=run_script_in_terminal)
+button_run = tk.Button(frame_Test, text="Test BNR", font=font, bg=button_color, fg="white", command=Bnr_test)
 button_run.grid(row=1, column=0, pady=10, padx=10)
+
+# Plot buttons
+frame_Plot = tk.Frame(root, bg=bg_color)
+frame_Plot.grid(row=7, column=1, padx=10, pady=10)
+tk.Label(frame_Plot, text="Plot:", font=font, bg=bg_color, fg=text_color).grid(row=0, column=0, sticky=tk.W, padx=5, pady=5)
+button_run = tk.Button(frame_Plot, text="eta evolution", font=font, bg=button_color, fg="white", command=eta_evolution)
+button_run.grid(row=1, column=0, pady=10, padx=10)
+
+
 
 # Load the parameters from the file
 load_parameters()

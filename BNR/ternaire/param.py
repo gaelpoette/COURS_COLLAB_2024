@@ -24,8 +24,5 @@ sig_r_3 = 0.0;
 # PARAM: la liste des constantes de réactions
 list_sigr={0 : sig_r_0, 1 : sig_r_1, 2 : sig_r_2, 3: sig_r_3}
 
-
 # PARAM MANQUANT: pour l'instant, la liste des conditions initiales est en dur...
-#conditions initiales : densité initiale en particules/m³
-conditions_initiales = {"e^-": 1*vol, "Ar": 1*vol,"B": 0.0,"C": 0.0,"K": 0.0,"L": 0.0}
 # pour comprendre comment elles sont codées, faut regarder...
