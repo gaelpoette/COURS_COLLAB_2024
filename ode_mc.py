@@ -13,11 +13,17 @@ from param import *
 #fixer la graine
 random.seed(100)
 
-print("liste des reactions")
-print(list_reac)
+def debug_print(*args, **kwargs):
+    """Imprime des messages uniquement si le mode debug est activé."""
+    if debug == 0:  # Si debug est activé
+        print(*args, **kwargs)
+
+
+debug_print("liste des reactions")
+debug_print(list_reac)
 n_reac = len(list_reac)
 if (not(n_reac==len(list_sigr))):
-  print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
+  debug_print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
   exit(1)
 
 # lecture de la liste des compositions des réactions
@@ -30,8 +36,8 @@ for i in range(n_reac):
      if not(compos_reac[j] in compos):
        compos.append(compos_reac[j])
 
-print("liste des especes")
-print(compos)
+debug_print("liste des especes")
+debug_print(compos)
 
 #"conditions initiales en eta codée en dur pour l'instant
 eta={}
@@ -40,18 +46,18 @@ for c in compos:
     if c=="Ar" or c=="e^-":
       eta[c] = 1. * vol
 	
-print("conditions initiales des espèces")
-print(eta)
+debug_print("conditions initiales des espèces")
+debug_print(eta)
 
 h={}
 nu={}
 for i in range(n_reac):
-    print("\n num de reaction = "+str(i)+"")
+    debug_print("\n num de reaction = "+str(i)+"")
     reac = list_reac[i]
     compos_reac = (reac.split(' '))
-    print(compos_reac)
+    debug_print(compos_reac)
     # recuperation du vecteur des reactifs
-    print("type de reaction: "+list_type[i]+"")
+    debug_print("type de reaction: "+list_type[i]+"")
 
     isnum=0
     if list_type[i] == "binaire":
@@ -61,12 +67,12 @@ for i in range(n_reac):
     elif list_type [i] == "ternaire":
           h[i] = [compos_reac[0], compos_reac[1], compos_reac[2]]
     else:
-          print("type de reaction non reconnue")
+          debug_print("type de reaction non reconnue")
           exit(2)
 
     #recuperation des vecteurs de coefficients stoechiométriques pour chaque reactions
     nu[i]={}
-    #print compos
+    #debug_print compos
     for cg in compos:
         nu[i][cg] = 0.
         num = 0
@@ -85,10 +91,10 @@ for i in range(n_reac):
           else:
               nu[i][cg] +=  0.
           num+=1
-print("\nles listes de réactifs (h) pour chaque reaction")
-print(h)
-print("les coefficients stoechiométriques (nu) pour chaque reaction")
-print(nu)
+debug_print("\nles listes de réactifs (h) pour chaque reaction")
+debug_print(h)
+debug_print("les coefficients stoechiométriques (nu) pour chaque reaction")
+debug_print(nu)
 # population de particules représentant la condition initiale
 PMC=[]
 for nmc in range(Nmc):
@@ -193,7 +199,7 @@ while tps < temps_final:
    cmdt+=str(eta[c] / vol)+" "
   cmd+="\n"+cmdt
 
-print("\n Fin du calcul")
+debug_print("\n Fin du calcul")
 output = open("rez.txt",'w')
 output.write(cmd)
 output.close()
