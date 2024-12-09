@@ -61,6 +61,8 @@ for i in range(n_reac):
           h[i] = [compos_reac[0], compos_reac[1]]
     elif list_type[i] == "unaire":
           h[i] = [compos_reac[0]]
+    elif list_type [i] == "ternaire":
+          h[i] = [compos_reac[0], compos_reac[1], compos_reac[2]]
     else:
           print("type de reaction non reconnue")
           exit(2)
@@ -77,6 +79,8 @@ for i in range(n_reac):
               isnum = (num == 0 or num == 1)
           if list_type[i] == "unaire":
               isnum = (num == 0)
+          if list_type[i] == "ternaire":
+              isnum = (num == 0 or num == 1 or num ==2)
           if c == cg and (isnum): #réactions à 2 réactifs
               nu[i][cg] += -1.
           if c == cg and (not isnum): #réactions à 2 réactifs
@@ -111,7 +115,7 @@ cmd+="\n"+str(tps)+" "
 for c in compos:
  cmd+=str(eta[c]/vol)+" "
 
-print("\n calcul en cours")
+print("\n En cours de calcul")
 
 while tps < temps_final:
 
@@ -137,6 +141,10 @@ while tps < temps_final:
               exposant = 1
               if list_type[i] == "unaire":
                   exposant = 0
+              if list_type[i] == "binaire":
+                  exposant = 1
+              if list_type[i] == "ternaire":
+                  exposant = 2
               volr = vol **exposant
               sig+= list_sigr[i] / volr * prod
 
@@ -170,6 +178,10 @@ while tps < temps_final:
                   exposant = 1
                   if list_type[i] == "unaire":
                       exposant = 0
+                  if list_type[i] == "binaire":
+                      exposant = 1
+                  if list_type[i] == "ternaire":
+                      exposant = 2
                   volr = vol **exposant
                   proba+= list_sigr[i] / volr * prod
 
@@ -186,7 +198,7 @@ while tps < temps_final:
    cmdt+=str(eta[c] / vol)+" "
   cmd+="\n"+cmdt
 
-print("\n fin du calcul")
+print("\n Fin du calcul")
 output = open("rez.txt",'w')
 output.write(cmd)
 output.close()
