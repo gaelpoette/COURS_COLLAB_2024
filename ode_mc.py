@@ -10,15 +10,21 @@ import random
 # importation des paramètres
 from param import *
 
+#fixer la graine
+random.seed(100)
+
 print("liste des reactions")
 print(list_reac)
-if (not(len(list_reac)==len(list_sigr))):
+n_reac = len(list_reac)
+if (not(n_reac==len(list_sigr))):
   print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
   exit(1)
 
 # lecture de la liste des compositions des réactions
 compos=[]
-for i in range(len(list_reac)): 
+
+
+for i in range(n_reac): 
   compos_reac=(list_reac[i].split(' '))
   for j in range(len(compos_reac)):
      if not(compos_reac[j] in compos):
@@ -39,7 +45,7 @@ print(eta)
 
 h={}
 nu={}
-for i in range(len(list_reac)):
+for i in range(n_reac):
     print("\n num de reaction = "+str(i)+"")
     reac = list_reac[i]
     compos_reac = (reac.split(' '))
@@ -52,6 +58,8 @@ for i in range(len(list_reac)):
           h[i] = [compos_reac[0], compos_reac[1]]
     elif list_type[i] == "unaire":
           h[i] = [compos_reac[0]]
+    elif list_type [i] == "ternaire":
+          h[i] = [compos_reac[0], compos_reac[1], compos_reac[2]]
     else:
           print("type de reaction non reconnue")
           exit(2)
@@ -68,6 +76,8 @@ for i in range(len(list_reac)):
               isnum = (num == 0 or num == 1)
           if list_type[i] == "unaire":
               isnum = (num == 0)
+          if list_type[i] == "ternaire":
+              isnum = (num == 0 or num == 1 or num ==2)
           if c == cg and (isnum): #réactions à 2 réactifs
               nu[i][cg] += -1.
           if c == cg and (not isnum): #réactions à 2 réactifs
@@ -100,7 +110,7 @@ cmd+="\n"+str(tps)+" "
 for c in compos:
  cmd+=str(eta[c]/vol)+" "
 
-print("\n début du calcul")
+print("\n En cours de calcul")
 
 while tps < temps_final:
 
@@ -118,7 +128,7 @@ while tps < temps_final:
 
           # section efficace totale
           sig = 0.
-          for i in range(len(list_reac)):
+          for i in range(n_reac):
               prod = 1.
               for H in h[i]:
                   prod *= pmc["densities"][H]
@@ -126,6 +136,10 @@ while tps < temps_final:
               exposant = 1
               if list_type[i] == "unaire":
                   exposant = 0
+              if list_type[i] == "binaire":
+                  exposant = 1
+              if list_type[i] == "ternaire":
+                  exposant = 2
               volr = vol **exposant
               sig+= list_sigr[i] / volr * prod
 
@@ -145,18 +159,13 @@ while tps < temps_final:
               for c in compos:
                   eta[c] += pmc["densities"][c] * pmc["weight"]
 
-                  # **Ajout du Test de positivité pour census**
-                  if pmc["densities"][c] < 0:
-                      print(f"ERREUR! Densité négative détectée pour l'espèce '{c}' dans PMC à t = {tps:.2f}.")
-                      exit(1)
-
           else:
               #reaction
               U = random.random()
 
-              reac = len(list_reac)-1
+              reac = n_reac-1
               proba = 0.
-              for i in range(len(list_reac)-1):
+              for i in range(n_reac-1):
                   prod = 1.
                   for H in h[i]:
                       prod *= pmc["densities"][H]
@@ -164,6 +173,10 @@ while tps < temps_final:
                   exposant = 1
                   if list_type[i] == "unaire":
                       exposant = 0
+                  if list_type[i] == "binaire":
+                      exposant = 1
+                  if list_type[i] == "ternaire":
+                      exposant = 2
                   volr = vol **exposant
                   proba+= list_sigr[i] / volr * prod
 
@@ -174,17 +187,13 @@ while tps < temps_final:
               for c in compos:
                   pmc["densities"][c]+=nu[reac][c]
 
-                  # **Ajout du Test de positivité après réaction**
-                  if pmc["densities"][c] < 0:
-                      print(f"ERREUR! Densité négative détectée pour l'espèce '{c}' dans PMC à t = {tps:.2f}.")
-                      exit(1)
-
   tps+=dt
   cmdt=""+str(tps)+" "
   for c in compos:
    cmdt+=str(eta[c] / vol)+" "
   cmd+="\n"+cmdt
 
+print("\n Fin du calcul")
 output = open("rez.txt",'w')
 output.write(cmd)
 output.close()

@@ -1,11 +1,11 @@
 # PARAM: nb de particules MC
-Nmc=10
+Nmc=100
 # PARAM: Volume
 vol = 10.
 # PARAM: construction de la liste des temps d'intérêt
 temps_final = 30
-dt=1
-Nt = int(temps_final/dt)
+dt=0.01
+Nt = int(temps_final/dt)+1
 temps=[]
 t=0.
 for it in range(Nt):
