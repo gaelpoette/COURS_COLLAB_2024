@@ -23,5 +23,5 @@ sig_r_1 = 2.0;
 list_sigr={0 : sig_r_0, 1 : sig_r_1}
 
 # PARAM MANQUANT: pour l'instant, la liste des conditions initiales est en dur...
-debug = 0
+debug = 1
 # pour comprendre comment elles sont codées, faut regarder...
