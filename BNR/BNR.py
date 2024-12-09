@@ -30,8 +30,18 @@ os.chdir("..")
 os.chdir("sol_exacte")
 os.system("\cp param.py ../../ ")
 os.system("python3 ../../ode_mc.py")
+sol_ref = np.loadtxt("euler.txt")
+sol_rez = np.loadtxt("rez.txt")
+
+err = np.mean(abs(sol_rez[:-1]-sol_ref))
+print(err)
+
 os.system("gnuplot GNU.plot")
-print("*****************************************************************   Visuellement, les courbes 'ref' et 'code' doivent être proches")
+if err < 0.002:
+    print("*************************************************************  Test comp. euler explicit OK")
+else:
+    print("*************************************************************  Test comp. euler explicit KO: comparer les courbes visuellement")
+
 os.chdir("..")
 
 
