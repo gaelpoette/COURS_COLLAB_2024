@@ -109,11 +109,6 @@ cmd+="\n"+str(tps)+" "
 for c in compos:
  cmd+=str(eta[c]/vol)+" "
 
-<<<<<<< HEAD
-print("\n début du calcul")
-
-=======
->>>>>>> main
 print("\n En cours de calcul")
 
 while tps < temps_final:
