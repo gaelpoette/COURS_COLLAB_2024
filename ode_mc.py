@@ -92,11 +92,7 @@ for i in range(len(list_reac)): #3 dans ce cas
         nu[i][cg] = 0.
         num = 0
         for c in compos_reac:
-          isnum=0
-          if reac_type==2:
-              isnum = (num == 0 or num == 1)
-          if reac_type==1:
-              isnum = (num == 0)
+          isnum = (num < reac_type)
           if c == cg and (isnum): #réactions à 2 réactifs
               nu[i][cg] += -1.
           if c == cg and (not isnum): #réactions à 2 réactifs
@@ -156,7 +152,7 @@ while tps < temps_final:
                   prod *= pmc["densities"][H]
 
               exposant = 1
-              if list_type[i] == "unaire":
+              if reac_type == 1:
                   exposant = 0
               volr = vol **exposant
               sig+= list_sigr[i] / volr * prod
@@ -189,7 +185,7 @@ while tps < temps_final:
                       prod *= pmc["densities"][H]
 
                   exposant = 1
-                  if list_type[i] == "unaire":
+                  if reac_type == 1:
                       exposant = 0
                   volr = vol **exposant
                   proba+= list_sigr[i] / volr * prod
