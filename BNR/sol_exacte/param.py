@@ -1,16 +1,12 @@
 # PARAM: nb de particules MC
+import numpy as np
 Nmc=1000
 # PARAM: Volume
 vol = 100.
 # PARAM: construction de la liste des temps d'intérêt
 temps_final = 30
-dt=1
-Nt = int(temps_final/dt)
-temps=[]
-t=0.
-for it in range(Nt):
-    temps.append(t)
-    t+=dt
+dt=0.01
+temps = np.arange(0., 30., dt)
 
 # PARAM: liste des réactions: codage pour dire e^-+Ar->B+C et B+C->Ar+K+L et e^-+B->C
 list_reac={0 : "e^- Ar B", 1 : "e^- B e^- B"}
