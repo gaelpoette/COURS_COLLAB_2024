@@ -60,6 +60,8 @@ for i in range(n_reac):
         list_type[i] = "binaire"
     elif len(elements_avant_arrow) == 1: 
         list_type[i] = "unaire" 
+    elif len(elements_avant_arrow) == 3:
+        list_type = "ternaire"
     else : 
         print("type de reaction non reconnue")
         
@@ -71,7 +73,8 @@ for i in range(n_reac):
           h[i] = [compos_reac[0], compos_reac[1]]
     elif len(elements_avant_arrow) == 1: # c'est à dire unaire
           h[i] = [compos_reac[0]]
-    elif list_type [i] == "ternaire":
+    # elif list_type [i] == "ternaire":
+    elif len(elements_avant_arrow) == 3: # c'est à dire ternaire
           h[i] = [compos_reac[0], compos_reac[1], compos_reac[2]]
     else:
           print("type de reaction non reconnue")
@@ -85,6 +88,8 @@ for i in range(n_reac):
         num = 0
         for c in compos_reac:
             isnum=0
+            if len(elements_avant_arrow) == 3: # ternaire
+                isnum = (num == 0 or num == 1 or num == 2)
             if len(elements_avant_arrow) == 2: # binaire
                 isnum = (num == 0 or num == 1)
             if len(elements_avant_arrow) == 1: # unaire
