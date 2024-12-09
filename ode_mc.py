@@ -8,7 +8,7 @@ import random
 
 
 # importation des paramètres
-from fich_cas_test.param import *
+from param import *
 
 #fixer la graine
 random.seed(100)
@@ -73,7 +73,11 @@ for i in range(n_reac):
           h[i] = [compos_reac[0], compos_reac[1]]
     elif len(elements_avant_arrow) == 1: # c'est à dire unaire
           h[i] = [compos_reac[0]]
+<<<<<<< HEAD
         # elif list_type [i] == "ternaire":
+=======
+    # elif list_type [i] == "ternaire":
+>>>>>>> OK
     elif len(elements_avant_arrow) == 3: # c'est à dire ternaire
           h[i] = [compos_reac[0], compos_reac[1], compos_reac[2]]
     else:
@@ -126,7 +130,7 @@ cmd+="\n"+str(tps)+" "
 for c in compos:
     cmd+=str(eta[c]/vol)+" "
 
-print("\n calcul en cours")
+print("\n En cours de calcul")
 
 while tps < temps_final:
 
@@ -201,7 +205,7 @@ while tps < temps_final:
         cmdt+=str(eta[c] / vol)+" "
     cmd+="\n"+cmdt
 
-print("\n fin du calcul")
+print("\n Fin du calcul")
 output = open("rez.txt",'w')
 output.write(cmd)
 output.close()
