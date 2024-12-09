@@ -13,8 +13,10 @@ dt = 1.0
 reac_0 = "e^- + Ar -> B + C"
 reac_1 = "B + C -> Ar + K + L"
 reac_2 = "e^- + B -> C"
+reac_3 = "e^- + B + C -> A"
 
 # PARAM: la liste des constantes de réactions
 sigr_0 = 1.0
 sigr_1 = 2.0
 sigr_2 = 0.5
+sigr_3 = 0.0

@@ -1,3 +1,5 @@
+import sys
+
 def read_parameters(file_path):
     parameters = {}
 
@@ -27,7 +29,10 @@ def read_parameters(file_path):
     return parameters
 
 # Comment extraire les paramètres
-file_path = './parameters/parameters.dat'
+if (len(sys.argv) > 1):
+    file_path = sys.argv[1]
+else:
+    file_path = './parameters/parameters.dat'
 parameters = read_parameters(file_path)
 
 list_reac = {}

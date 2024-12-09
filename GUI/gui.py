@@ -16,12 +16,13 @@ def run_script_in_terminal():
 
 
 def Bnr_test():
-    os.system("echo 'Petit probleme avec les path. En cours de réglage...'")
-    # os.system("python BNR/BNR.py")
-    # os.system("cd ../")
+    #os.system("echo 'Petit probleme avec les path. En cours de réglage...'")
+    os.chdir("BNR")
+    os.system("python3 BNR.py")
+    os.chdir("..")
     
 def eta_evolution():
-    os.system("python euler_explicit.py")
+    os.system("python3 euler_explicit.py")
 
     
 def show_parameters():
