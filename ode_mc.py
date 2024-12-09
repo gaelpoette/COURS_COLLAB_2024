@@ -10,9 +10,6 @@ import re
 #fixer la graine
 random.seed(100)
 
-# importation des paramètres
-#from param import *
-
 from read_param import *
 
 
@@ -41,14 +38,14 @@ def save_sol(output_path=False, compos=False):
 
 
 if 'list_reac' not in globals():
-  print("ATTENTION! La variable list_react n'existe pas")
-  exit(1)
+    print("ATTENTION! La variable list_react n'existe pas")
+    exit(1)
 
 print("liste des reactions")
 print(list_reac)
 if (not(len(list_reac)==len(list_sigr))):
-  print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
-  exit(1)
+    print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
+    exit(1)
 
 
 # fonction pour la lecture de la liste des compositions des réactions
@@ -91,21 +88,8 @@ for i in range(len(list_reac)):
     produits = compos_reac[1].split(' + ')
     print('Réactifs: ', reactifs)
     print('Produits: ', produits)
-    # recuperation du vecteur des reactifs
-    #print("type de reaction: "+list_type[i]+"")
     
     h[i] = reactifs
-
-    isnum=0
-    if list_type[i] == "binaire":
-          h[i] = [compos_reac[0], compos_reac[1]]
-    elif list_type[i] == "unaire":
-          h[i] = [compos_reac[0]]
-    elif list_type [i] == "ternaire":
-          h[i] = [compos_reac[0], compos_reac[1], compos_reac[2]]
-    else:
-          print("type de reaction non reconnue")
-          exit(2)
 
     #recuperation des vecteurs de coefficients stoechiométriques pour chaque reactions
     nu[i]={}
@@ -113,25 +97,18 @@ for i in range(len(list_reac)):
     for cg in compos:
         nu[i][cg] = 0.
         num = 0
-        for c in compos_reac:
-          isnum=0
-          if list_type[i] == "binaire":
-              isnum = (num == 0 or num == 1)
-          if list_type[i] == "unaire":
-              isnum = (num == 0)
-          if list_type[i] == "ternaire":
-              isnum = (num == 0 or num == 1 or num ==2)
-          if c == cg and (isnum): #réactions à 2 réactifs
-              nu[i][cg] += -1.
-          if c == cg and (not isnum): #réactions à 2 réactifs
-              nu[i][cg] +=  1.
-          else:
-              nu[i][cg] +=  0.
-          num+=1
+        for c in reactifs:
+            if c==cg:
+                nu[i][cg] += -1.
+        for c in produits:
+            if c == cg:
+                nu[i][cg] += 1.
+
 print("\nles listes de réactifs (h) pour chaque reaction")
 print(h)
 print("les coefficients stoechiométriques (nu) pour chaque reaction")
 print(nu)
+
 # population de particules représentant la condition initiale
 PMC=[]
 for nmc in range(Nmc):
@@ -153,11 +130,7 @@ cmd+="\n"+str(tps)+" "
 for c in compos:
     cmd+=str(eta[c]/vol)+" "
 
-<<<<<<< HEAD
-print("\n début du calcul")
-=======
 print("\n En cours de calcul")
->>>>>>> OK
 
 while tps < temps_final:
 
