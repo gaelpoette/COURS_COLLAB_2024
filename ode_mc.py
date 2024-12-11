@@ -8,7 +8,7 @@ import random
 
 
 # importation des paramètres
-from fich_cas_test.param import *
+from Test.Nicola.Test1.param import *
 
 #fixer la graine
 random.seed(100)
@@ -51,7 +51,6 @@ for i in range(len(list_reac)): #3 dans ce cas
     print("\n num de reaction = "+str(i)+"") 
     reac = list_reac[i]
     compos_reac = (reac.split(' ')) #String ->  Character
-    print(compos_reac)
     # recuperation du vecteur des reactifs
     #print("type de reaction: "+list_type[i]+"")
 
@@ -63,9 +62,11 @@ for i in range(len(list_reac)): #3 dans ce cas
             break
     print("Type de reaction: ", reac_type)
 
+    """
     if(reac_type>2):
         print("Type de reaction non reconnue")
         exit(2)
+    """ 
 
     h[i] = [] 
 
@@ -105,8 +106,7 @@ print(h)
 print("les coefficients stoechiométriques (nu) pour chaque reaction")
 print(nu)
 
-
-
+compos.remove("->")
 # population de particules représentant la condition initiale
 PMC=[]
 for nmc in range(Nmc):
@@ -211,7 +211,7 @@ print("\n fin du calcul")
 
 
 #output 
-output = open("rez.txt",'w')
+output = open("Test/Nicola/Test1/rezN.txt",'w')
 output.write(cmd)
 output.close()
 
