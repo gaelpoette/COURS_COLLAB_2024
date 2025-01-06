@@ -1,0 +1,37 @@
+pas de variable dont le nom est un seul caractère
+
+
+1. Noms des variables :
+   - Il est interdit d'utiliser des noms d'une seule lettre, sauf dans les cas suivants :
+     - Variables d'itération dans une boucle .
+     - Constantes mathématiques standards .
+
+2. Noms des fonctions :
+   - Les noms doivent décrire clairement le rôle de la fonction.
+     Exemple : calculer_somme au lieu de calcS.
+
+4. Longueur des lignes :
+   - Limiter la longueur des lignes à 79 caractères pour une meilleure lisibilité.
+
+5. Commentaires :
+   - Ajouter des commentaires clairs et concis pour expliquer le code complexe.
+
+6. Conventions générales :
+   - Ne pas laisser de code inutilisé ou de commentaires obsolètes dans les fichiers.
+
+7. Gestion des erreurs :
+   - Toujours gérer les exceptions avec des blocs try/except.
+   - Les messages d'erreur doivent être explicites.
+
+8. Structure du projet :
+   - Organiser le code en modules logiques et bien structurés.
+   - Inclure un fichier README pour expliquer l'objectif du projet et comment l'utiliser.
+
+9. Documentation :
+   - Documenter les paramètres et retours des fonctions.
+   - Fournir des exemples d'utilisation si nécessaire.
+
+10. Tests :
+    - Tous les modules doivent être accompagnés de tests unitaires.
+    - Les noms des tests doivent refléter les cas testés.
+
