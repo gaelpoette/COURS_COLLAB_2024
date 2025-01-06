@@ -1,203 +1,177 @@
 #!/usr/bin/python
-# -*- coding: iso-8859-1 -*-
-
-from math import *
-from string import *
+# -*- coding: iso-8859-1 -*-  
 import os
 import random
-
-
-# importation des paramètres
+import math
 from param import *
 
-#fixer la graine
-random.seed(100)
 
-print("liste des reactions")
-print(list_reac)
-n_reac = len(list_reac)
-if (not(n_reac==len(list_sigr))):
-  print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
-  exit(1)
-
-# lecture de la liste des compositions des réactions
-compos=[]
+def verifier_listes(list_reac, list_sigr):
+    """
+    Vérifie si les listes list_reac et list_sigr ont la même taille.
+    """
+    if len(list_reac) != len(list_sigr):
+        print("ATTENTION : Les listes des réactions et des coefficients doivent avoir la même taille !")
+        exit(1)
 
 
-for i in range(n_reac): 
-  compos_reac=(list_reac[i].split(' '))
-  for j in range(len(compos_reac)):
-     if not(compos_reac[j] in compos):
-       compos.append(compos_reac[j])
+def extraire_compositions(list_reac):
+    """
+    Extrait la liste des espèces chimiques uniques à partir des réactions.
+    """
+    compos = []
+    for reaction in list_reac:
+        especes = reaction.split()
+        for espece in especes:
+            if espece not in compos:
+                compos.append(espece)
+    return compos
 
-print("liste des especes")
-print(compos)
 
-#"conditions initiales en eta codée en dur pour l'instant
-eta={}
-for c in compos:
-    eta[c]=0.
-    if c=="Ar" or c=="e^-":
-      eta[c] = 1. * vol
-	
-print("conditions initiales des espèces")
-print(eta)
+def initialiser_eta(compos, vol):
+    """
+    Initialise le dictionnaire des concentrations pour chaque espèce chimique.
+    """
+    eta = {}
+    for espece in compos:
+        if espece in ["Ar", "e^-"]:
+            eta[espece] = 1.0 * vol
+        else:
+            eta[espece] = 0.0
+    return eta
 
-h={}
-nu={}
-for i in range(n_reac):
-    print("\n num de reaction = "+str(i)+"")
-    reac = list_reac[i]
-    compos_reac = (reac.split(' '))
-    print(compos_reac)
-    # recuperation du vecteur des reactifs
-    print("type de reaction: "+list_type[i]+"")
 
-    isnum=0
-    if list_type[i] == "binaire":
-          h[i] = [compos_reac[0], compos_reac[1]]
-    elif list_type[i] == "unaire":
-          h[i] = [compos_reac[0]]
-    else:
-          print("type de reaction non reconnue")
-          exit(2)
+def initialiser_population(compos, eta, Nmc):
+    """
+    Initialise la population de particules (PMC).
+    """
+    population = []
+    poids = 1.0 / Nmc
+    for _ in range(Nmc):
+        particule = {"weight": poids, "densities": eta.copy()}
+        population.append(particule)
+    return population
 
-    #recuperation des vecteurs de coefficients stoechiométriques pour chaque reactions
-    nu[i]={}
-    #print compos
-    for cg in compos:
-        nu[i][cg] = 0.
-        num = 0
-        for c in compos_reac:
-          isnum=0
-          if list_type[i] == "binaire":
-              isnum = (num == 0 or num == 1)
-          if list_type[i] == "unaire":
-              isnum = (num == 0)
-          if c == cg and (isnum): #réactions à 2 réactifs
-              nu[i][cg] += -1.
-          if c == cg and (not isnum): #réactions à 2 réactifs
-              nu[i][cg] +=  1.
-          else:
-              nu[i][cg] +=  0.
-          num+=1
-print("\nles listes de réactifs (h) pour chaque reaction")
-print(h)
-print("les coefficients stoechiométriques (nu) pour chaque reaction")
-print(nu)
-# population de particules représentant la condition initiale
-PMC=[]
-for nmc in range(Nmc):
-    w=1. / Nmc
-    eta_nmc={}
-    for c in compos:
-        eta_nmc[c] = eta[c]
-    pmc = {"weight" : w, "densities" : eta_nmc}
-    PMC.append(pmc)
 
-#entete du fichier
-cmd="\n"+"#temps"+" "
-for c in compos:
- cmd+=str(c)+" "
+def calculer_coefficients_stoechiometriques(compos, list_reac, list_type):
+    """
+    Calcule les vecteurs des réactifs (h) et les coefficients stœchiométriques (nu) pour chaque réaction.
+    """
+    h = {}
+    nu = {}
 
-it=0
-tps = 0.
-cmd+="\n"+str(tps)+" "
-for c in compos:
- cmd+=str(eta[c]/vol)+" "
+    for i, reaction in enumerate(list_reac):
+        h[i] = []
+        compos_reac = reaction.split()
+        
+        if list_type[i] == "binaire":
+            h[i] = [compos_reac[0], compos_reac[1]]
+        elif list_type[i] == "unaire":
+            h[i] = [compos_reac[0]]
+        else:
+            print("Type de réaction non reconnue :", list_type[i])
+            exit(2)
 
-print("\n calcul en cours")
+        nu[i] = {}
+        for espece in compos:
+            nu[i][espece] = 0.0
+            for j, reactif in enumerate(compos_reac):
+                isnum = (j == 0 or j == 1) if list_type[i] == "binaire" else (j == 0)
+                if reactif == espece:
+                    nu[i][espece] += -1.0 if isnum else 1.0
+    return h, nu
 
-while tps < temps_final:
 
-  dt = temps[it+1]-temps[it]
+def sauvegarder_resultats(output_path, eta, compos, vol):
+    """
+    Sauvegarde les résultats des concentrations dans un fichier texte.
+    """
+    with open(output_path, 'w') as output:
+        output.write("#temps " + " ".join(compos) + "\n")
+        output.write("0.0 " + " ".join(f"{eta[espece] / vol:.6f}" for espece in compos) + "\n")
 
-  # initialisation du tableau de tallies
-  for c in compos:
-      eta[c] = 0.
 
-  for pmc in PMC:
+def generer_plot(output_path, compos):
+    """
+    Génère un fichier de script gnuplot pour tracer les résultats.
+    """
+    cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
+    cmd_gnu += f"'{output_path}' using 1:2 title '{compos[0]}'"
+    for i, espece in enumerate(compos[1:], start=3):
+        cmd_gnu += f", '' using 1:{i} title '{espece}'"
+    cmd_gnu += "; pause -1"
     
-      tps_cur = 0.
+    with open("gnu.plot", 'w') as output:
+        output.write(cmd_gnu)
 
-      while tps_cur < dt:
 
-          # section efficace totale
-          sig = 0.
-          for i in range(n_reac):
-              prod = 1.
-              for H in h[i]:
-                  prod *= pmc["densities"][H]
+def lancer_simulation(list_reac, list_type, list_sigr, compos, eta, h, nu, vol, Nmc, temps, temps_final):
+    """
+    Effectue la simulation des réactions chimiques en boucle temporelle.
+    """
+    tps = 0.0
+    cmd="\n"
+    cmd += "#temps " + " ".join(compos) + "\n"
+    cmd += "0.0 " + " ".join(f"{eta[espece] / vol:.6f}" for espece in compos) + "\n"
+    PMC = initialiser_population(compos, eta, Nmc)
 
-              exposant = 1
-              if list_type[i] == "unaire":
-                  exposant = 0
-              volr = vol **exposant
-              sig+= list_sigr[i] / volr * prod
+    while tps < temps_final:
+        dt = temps[1] - temps[0]  # Pas de temps constant
 
-          #tirage du temps de la prochaine reaction
-          U = random.random()
-          tau = 1.e32
-          if sig > 0.:
-              tau = - log(U) / sig
+        # Réinitialisation des tallies
+        for espece in compos:
+            eta[espece] = 0.0
 
-          # temps courant updaté
-          tps_cur += tau
+        for pmc in PMC:
+            tps_cur = 0.0
+            while tps_cur < dt:
+                # Section efficace totale
+                sig = sum(
+                    list_sigr[i] / (vol ** (0 if list_type[i] == "unaire" else 1)) *
+                    math.prod(pmc["densities"][espece] for espece in h[i])
+                    for i in range(len(list_reac))
+                )
 
-          # détermination de l'évenement que la pmc va subir
-          if tps_cur > dt:
-              #census
-              tps_cur = dt
-              for c in compos:
-                  eta[c] += pmc["densities"][c] * pmc["weight"]
+                # Temps de la prochaine réaction
+                tau = -math.log(random.random()) / sig if sig > 0.0 else 1e32
+                tps_cur += tau
 
-          else:
-              #reaction
-              U = random.random()
+                if tps_cur > dt:
+                    # Census
+                    tps_cur = dt
+                    for espece in compos:
+                        eta[espece] += pmc["densities"][espece] * pmc["weight"]
+                else:
+                    # Réaction
+                    U = random.random()
+                    proba_cumulee = 0.0
+                    for i, reaction in enumerate(list_reac):
+                        proba = list_sigr[i] / (vol ** (0 if list_type[i] == "unaire" else 1)) * math.prod(
+                            pmc["densities"][espece] for espece in h[i]
+                        )
+                        proba_cumulee += proba
+                        if U * sig < proba_cumulee:
+                            for espece in compos:
+                                pmc["densities"][espece] += nu[i][espece]
+                            break
 
-              reac = n_reac-1
-              proba = 0.
-              for i in range(n_reac-1):
-                  prod = 1.
-                  for H in h[i]:
-                      prod *= pmc["densities"][H]
+        tps += dt
+        cmd += f"{tps:.2f} " + " ".join(f"{eta[espece] / vol:.6f}" for espece in compos) + "\n"
 
-                  exposant = 1
-                  if list_type[i] == "unaire":
-                      exposant = 0
-                  volr = vol **exposant
-                  proba+= list_sigr[i] / volr * prod
+    with open("rez.txt", 'w') as output:
+        output.write(cmd)
 
-                  if U * sig < proba:
-                      reac = i
-                      break
 
-              for c in compos:
-                  pmc["densities"][c]+=nu[reac][c]
+# Exemple d'utilisation
+if __name__ == "__main__":
+    # Fixer la graine pour la reproductibilité
+    random.seed(100)
 
-  tps+=dt
-  cmdt=""+str(tps)+" "
-  for c in compos:
-   cmdt+=str(eta[c] / vol)+" "
-  cmd+="\n"+cmdt
-
-print("\n fin du calcul")
-output = open("rez.txt",'w')
-output.write(cmd)
-output.close()
-
-cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
-i=3
-cmd_gnu+="'rez.txt' lt 1 w lp  t '"+str(compos[0])+"'"
-for c in compos:
-   if not(c==compos[0]):
-     cmd_gnu+=",'' u 1:"+str(i)+" lt "+str(i)+" w lp t '"+str(compos[i-2])+"'"
-     i+=1
-
-cmd_gnu+=";pause -1"
-output = open("gnu.plot",'w')
-output.write(cmd_gnu)
-output.close()
-
-os.system("gnuplot gnu.plot")
-
+    verifier_listes(list_reac, list_sigr)
+    compos = extraire_compositions(list_reac)
+    eta = initialiser_eta(compos, vol)
+    h, nu = calculer_coefficients_stoechiometriques(compos, list_reac, list_type)
+    sauvegarder_resultats("rez.txt", eta, compos, vol)
+    generer_plot("rez.txt", compos)
+    lancer_simulation(list_reac, list_type, list_sigr, compos, eta, h, nu, vol, Nmc, temps, temps_final)
+    os.system("gnuplot gnu.plot")

@@ -30,6 +30,5 @@ list_sigr = [
     0.5   # Constante pour la réaction 2
 ]
 
-
 # PARAM MANQUANT: pour l'instant, la liste des conditions initiales est en dur...
 # pour comprendre comment elles sont codées, faut regarder...
