@@ -22,7 +22,7 @@ def Bnr_test():
     os.chdir("..")
     
 def eta_evolution():
-    os.system("python3 euler_explicit.py")
+    os.system("python euler_explicit.py")
 
     
 def show_parameters():
