@@ -105,9 +105,6 @@ for c in compos:
 
 print("\n début du calcul")
 
-#Fixed seed
-
-
 while tps < temps_final:
 
     dt = temps[it+1]-temps[it]
